@@ -5,6 +5,8 @@ import { Form, Popconfirm, Space, Button, Select } from 'antd';
 import { useState } from 'react';
 import style from './index.less';
 import { connect } from 'dva';
+import ProForm from '@ant-design/pro-form';
+import TagPicker from './components/TagPicker';
 
 interface TablePageProp extends ConnectProps {
   globalStatus: boolean;
@@ -129,6 +131,8 @@ const TablePage = ({
   changePageIndex,
 }: TablePageProp) => {
   const [activeTab, setActiveTab] = useState('tab1');
+  const [form] = Form.useForm();
+
   return (
     <>
       <div>
@@ -151,6 +155,24 @@ const TablePage = ({
           change
         </button>
       </div>
+      <ProForm
+        className="filter_form"
+        onFinish={async (values) => {
+          console.log(values);
+        }}
+        form={form}
+        submitter={false}
+        layout="inline"
+      >
+        <TagPicker />
+        <Form.Item className="submit">
+          <Space>
+            <Button type="primary" onClick={() => form?.submit()}>
+              确定筛选
+            </Button>
+          </Space>
+        </Form.Item>
+      </ProForm>
       <ProTable<TableListItem>
         className={style['pro-table']}
         columns={columns}
