@@ -31,6 +31,10 @@
     component: './ImageEdit/components/CropImage',
   },
   {
+    path: '/imageEdit/watermaker',
+    component: './ImageEdit/components/WatermakerImage',
+  },
+  {
     component: './404',
   },
 ];
