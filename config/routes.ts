@@ -21,6 +21,16 @@
     component: './TableList',
   },
   {
+    name: '图片编辑器',
+    icon: 'highlight',
+    path: '/imageEdit',
+    component: './ImageEdit/index',
+  },
+  {
+    path: '/imageEdit/crop',
+    component: './ImageEdit/components/CropImage',
+  },
+  {
     component: './404',
   },
 ];

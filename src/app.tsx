@@ -8,6 +8,7 @@ import { notification } from 'antd';
 import type { RequestOptionsInit, ResponseError } from 'umi-request';
 import logo from '@/assets/imgs/logo.png';
 import * as qs from 'qs';
+import routes from '../config/routes';
 
 const loginPath = '/login';
 
@@ -63,6 +64,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     logo,
     collapsedButtonRender: false,
     menuHeaderRender: undefined,
+    menuDataRender: () => {
+      return routes;
+    },
     ...initialState?.settings,
   };
 };

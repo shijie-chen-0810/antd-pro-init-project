@@ -58,6 +58,7 @@
     "antd": "^4.14.0",
     "bizcharts": "^4.1.14",
     "classnames": "^2.2.6",
+    "cropperjs": "^1.5.12",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",
     "omit.js": "^2.0.2",
