@@ -1,19 +1,8 @@
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import type { GlobalState, TablePageState, ConnectProps } from 'umi';
 import { Form, Popconfirm, Space, Button, Select } from 'antd';
 import { useState } from 'react';
 import style from './index.less';
-import { connect } from 'dva';
-import ProForm from '@ant-design/pro-form';
-import TagPicker from './components/TagPicker';
-
-interface TablePageProp extends ConnectProps {
-  globalStatus: boolean;
-  pageIndex: number;
-  changeGlobalStatus: () => void;
-  changePageIndex: (step: number) => void;
-}
 
 const valueEnum = {
   0: 'close',
@@ -124,55 +113,11 @@ const columns: ProColumns<TableListItem>[] = [
   },
 ];
 
-const TablePage = ({
-  globalStatus,
-  pageIndex,
-  changeGlobalStatus,
-  changePageIndex,
-}: TablePageProp) => {
+const TablePage = () => {
   const [activeTab, setActiveTab] = useState('tab1');
-  const [form] = Form.useForm();
 
   return (
     <>
-      <div>
-        {String(globalStatus)}
-        <button
-          onClick={() => {
-            changeGlobalStatus();
-          }}
-        >
-          change
-        </button>
-      </div>
-      <div>
-        {String(pageIndex)}
-        <button
-          onClick={() => {
-            changePageIndex(2);
-          }}
-        >
-          change
-        </button>
-      </div>
-      <ProForm
-        className="filter_form"
-        onFinish={async (values) => {
-          console.log(values);
-        }}
-        form={form}
-        submitter={false}
-        layout="inline"
-      >
-        <TagPicker />
-        <Form.Item className="submit">
-          <Space>
-            <Button type="primary" onClick={() => form?.submit()}>
-              确定筛选
-            </Button>
-          </Space>
-        </Form.Item>
-      </ProForm>
       <ProTable<TableListItem>
         className={style['pro-table']}
         columns={columns}
@@ -231,27 +176,4 @@ const TablePage = ({
   );
 };
 
-export default connect(
-  ({ global, tablePage }: { global: GlobalState; tablePage: TablePageState }) => {
-    return {
-      ...global,
-      ...tablePage,
-    };
-  },
-  (dispatch) => {
-    return {
-      changeGlobalStatus() {
-        dispatch({
-          type: 'global/changeStatus',
-          payload: '123',
-        });
-      },
-      changePageIndex(step: number) {
-        dispatch({
-          type: 'tablePage/addPageIndex',
-          payload: step,
-        });
-      },
-    };
-  },
-)(TablePage);
+export default TablePage;

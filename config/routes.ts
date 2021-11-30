@@ -35,6 +35,12 @@
     component: './ImageEdit/components/WatermakerImage',
   },
   {
+    name: '案例库',
+    icon: 'highlight',
+    path: '/smallDemo',
+    component: './SmallDemo',
+  },
+  {
     component: './404',
   },
 ];

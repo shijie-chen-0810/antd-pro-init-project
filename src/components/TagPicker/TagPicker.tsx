@@ -448,7 +448,6 @@ const TagPicker: React.FC<TagPickerProps> = ({ value, fieldProps, ...resArg }) =
 
 const ProFormTagPicker: React.FC<ProFormComplexPickerProps> = (props) => {
   const { fieldProps } = props;
-  console.log(fieldProps);
   return (
     <ProForm.Item name="tags">
       <TagPicker fieldProps={fieldProps} />
