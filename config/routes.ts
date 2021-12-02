@@ -10,19 +10,16 @@
   },
   {
     name: '首页',
-    icon: 'home',
     path: '/home',
     component: './Home',
   },
   {
     name: '表格页',
-    icon: 'table',
     path: '/table',
     component: './TableList',
   },
   {
     name: '图片编辑器',
-    icon: 'highlight',
     path: '/imageEdit',
     component: './ImageEdit/index',
   },
@@ -36,9 +33,13 @@
   },
   {
     name: '案例库',
-    icon: 'highlight',
     path: '/smallDemo',
     component: './SmallDemo',
+  },
+  {
+    name: '富文本编辑器',
+    path: '/textEditor',
+    component: './TextEditor',
   },
   {
     component: './404',

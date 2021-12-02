@@ -4,7 +4,7 @@ import XLSX from 'xlsx';
  * 导入excel的函数
  * @param {*} file
  */
-const importsExcel = (files: any) => {
+export const importsExcel = (files: File) => {
   //使用promise导入
   return new Promise((resolve, reject) => {
     // 获取上传的文件对象
@@ -47,7 +47,7 @@ type headerConfig = {
  * @param {*} data
  * @param {*} fileName
  */
-const exportExcel = (headers: headerConfig[], data: any[], fileName = 'demo.xlsx') => {
+export const exportExcel = (headers: headerConfig[], data: any[], fileName = 'demo.xlsx') => {
   const _headers = headers
     .map((item, i) =>
       Object.assign(
@@ -105,4 +105,81 @@ const exportExcel = (headers: headerConfig[], data: any[], fileName = 'demo.xlsx
   XLSX.writeFile(wb, fileName);
 };
 
-export { importsExcel, exportExcel };
+type OutputFormat = {
+  x: string | number;
+  y?: string | number;
+  y1?: string | number;
+  name: string;
+};
+
+type formatDataForChartFunction = (
+  initData: any[],
+  ouputFormat: OutputFormat[],
+  dataLength?: number,
+) => OutputFormat[];
+
+export const formatDataForChart: formatDataForChartFunction = (
+  initData: any[] = [],
+  ouputFormat: OutputFormat[],
+  dataLength?: number,
+) => {
+  const initArr: OutputFormat[] = [];
+  initData?.forEach((item) => {
+    const oneGroupData: OutputFormat[] = [];
+    ouputFormat.forEach((oneFormat) => {
+      oneGroupData.push({
+        x: String(item[oneFormat.x]),
+        [oneFormat.y ? 'y' : 'y1']: item[(oneFormat.y || oneFormat.y1) as string],
+        name: oneFormat.name,
+      });
+    });
+    initArr.push(...oneGroupData);
+  });
+  if (dataLength) {
+    if (initData.length) {
+      for (let i = 1; i < dataLength - (initData.length - 1); i += 1) {
+        console.log(dataLength, initData?.length);
+        const oneGroupData: OutputFormat[] = [];
+        ouputFormat.forEach((oneFormat) => {
+          oneGroupData.push({
+            x: String(initData?.[initData?.length - 1][oneFormat.x] + i),
+            y: 0,
+            name: oneFormat.name,
+          });
+        });
+        initArr.push(...oneGroupData);
+      }
+    } else {
+      for (let i = 0; i < dataLength; i += 1) {
+        const oneGroupData: OutputFormat[] = [];
+        ouputFormat.forEach((oneFormat) => {
+          oneGroupData.push({
+            x: String(i + 1),
+            y: 0,
+            name: oneFormat.name,
+          });
+        });
+        initArr.push(...oneGroupData);
+      }
+    }
+  }
+  return initArr;
+};
+
+export const createTimeColumn = (title: string, key: string, timeType?: string) => {
+  return [
+    {
+      title,
+      dataIndex: key,
+      valueType: 'dateTime',
+      width: 180,
+      hideInSearch: true,
+    },
+    {
+      title,
+      dataIndex: key,
+      valueType: timeType || 'dateRange',
+      hideInTable: true,
+    },
+  ];
+};

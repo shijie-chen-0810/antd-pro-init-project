@@ -1,11 +1,14 @@
 import { Card, Col, Row, Button, Divider, Space, Form, message } from 'antd';
 import type { GlobalState, SmallDemoState, ConnectProps } from 'umi';
 import { connect } from 'dva';
-import { importsExcel, exportExcel } from '@/utils/utils';
+import { importsExcel, exportExcel, formatDataForChart } from '@/utils/utils';
+import { queryCustomerDimensionChartData } from '@/services/smallDemo';
 import ProForm from '@ant-design/pro-form';
 import TagPicker from '@/components/TagPicker';
 import { Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import ChartCard from '@/components/ChartCard';
+import style from './SmallDemo.less';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -72,7 +75,7 @@ const SmallDemo = ({
     );
   };
   return (
-    <div className="site-card-wrapper">
+    <div className={style['site-card-wrapper']}>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
         <Col span={12}>
           <Card title="Dva案例" bordered={false}>
@@ -131,10 +134,33 @@ const SmallDemo = ({
           <Card title="excel导入导出案例" bordered={false}>
             <Space>
               <Button onClick={downloadFileToExcelXLSX}>xlsx导出</Button>
-              <Upload beforeUpload={importExcelToJsonXLSX} showUploadList={false}>
+              <Upload beforeUpload={importExcelToJsonXLSX} showUploadList={false} accept=".xlsx">
                 <Button icon={<UploadOutlined />}>获取excel信息</Button>
               </Upload>
             </Space>
+          </Card>
+        </Col>
+      </Row>
+      <Row style={{ marginBottom: '16px' }}>
+        <Col span={24}>
+          <Card title="BizChart图表案例" bordered={false}>
+            <ChartCard
+              title="客户例子来源分布"
+              height={200}
+              color={['name', ['#d97459', '#e3c477']]}
+              type="interval-dodge"
+              rorate={true}
+              filter={['day']}
+              setParams={{ dayKey: 'time', otherParams: { dimension: 'source' } }}
+              queryMethod={queryCustomerDimensionChartData}
+              dataFormat={(data: any) => {
+                const result = formatDataForChart(data.result, [
+                  { name: '已成交', x: 'text', y: 'traded' },
+                  { name: '未成交', x: 'text', y: 'notTraded' },
+                ]);
+                return result;
+              }}
+            />
           </Card>
         </Col>
       </Row>
