@@ -3,10 +3,10 @@ import { defineConfig } from 'umi';
 
 // 配置打包后的公共前缀路径
 export default defineConfig({
-  publicPath: '/pangu-web/',
+  // publicPath: '/pangu-web/',
   // chunks: ['vendors', 'umi'],
   chainWebpack(config) {
-    config.output.publicPath('/pangu-web/');
+    // config.output.publicPath('/pangu-web/');
 
     // antd moment -> dayjs
     // config.plugin('moment2dayjs').use('antd-dayjs-webpack-plugin');
