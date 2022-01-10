@@ -11,7 +11,7 @@ const waitTime = (time: number = 100) => {
 
 export default {
   // 核查管理列表数据
-  'GET /interface/customer/inspect/manage/list': async (req: Request, res: Response) => {
+  'GET /api/customer/inspect/manage/list': async (req: Request, res: Response) => {
     await waitTime(100);
     const data = Mock.mock({
       [`list|${req.query.pageSize}`]: [
@@ -35,7 +35,7 @@ export default {
     });
   },
   //查询核查小二
-  'GET /interface/customer/inspect/user/list': async (req: Request, res: Response) => {
+  'GET /api/customer/inspect/user/list': async (req: Request, res: Response) => {
     await waitTime(1000);
     res.send({
       code: 200,

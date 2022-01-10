@@ -15,7 +15,7 @@ const waitTime = (time: number = 100) => {
 
 export default {
   // 客户多维度图表数据
-  'GET /interface/analysis/customer/dimension': async (req: Request, res: Response) => {
+  'GET /api/analysis/customer/dimension': async (req: Request, res: Response) => {
     await waitTime(1000);
     const bizType = req.query.dimension;
     const resultData: any = [];

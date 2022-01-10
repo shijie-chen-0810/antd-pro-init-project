@@ -9,7 +9,7 @@
 export default {
   dev: {
     '/interface/': {
-      target: 'http://10.255.11.252:3000',
+      target: 'http://42.192.228.176:3000',
       changeOrigin: true,
       pathRewrite: { api: '' },
     },

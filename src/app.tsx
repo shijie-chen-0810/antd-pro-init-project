@@ -160,7 +160,7 @@ const addAuthHeader = (url: string, options: RequestOptionsInit) => {
 const addUrlPrefix = (url: string, options: RequestOptionsInit) => {
   const headers = { ...options.headers };
   return {
-    url: `/interface${url}`,
+    url: `/api${url}`,
     // url,
     options: { ...options, headers },
   };
