@@ -9,7 +9,7 @@ const waitTime = (time: number = 100) => {
 };
 
 export default {
-  'GET /internal/selection/query': async (req: Request, res: Response) => {
+  'GET /interface/selection/query': async (req: Request, res: Response) => {
     await waitTime(1000);
     const { selectionWithDictType } = req.query;
     if (selectionWithDictType === 'CRM-ACCOUNT-TYPE') {
@@ -35,7 +35,7 @@ export default {
       });
     }
   },
-  'POST /internal/system/file/uploadPic': async (req: Request, res: Response) => {
+  'POST /interface/system/file/uploadPic': async (req: Request, res: Response) => {
     await waitTime(1000);
     res.send({
       code: 200,

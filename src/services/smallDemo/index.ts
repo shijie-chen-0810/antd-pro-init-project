@@ -12,3 +12,11 @@ export async function queryCustomerDimensionChartData(options: any) {
     },
   });
 }
+
+export async function uploadFile(data: any) {
+  // TODO 返回类型设置
+  return request('/profile', {
+    method: 'post',
+    data,
+  });
+}

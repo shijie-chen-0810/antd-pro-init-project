@@ -2,12 +2,14 @@ import { Card, Col, Row, Button, Divider, Space, Form, message } from 'antd';
 import type { GlobalState, SmallDemoState, ConnectProps } from 'umi';
 import { connect } from 'dva';
 import { importsExcel, exportExcel, formatDataForChart } from '@/utils/utils';
-import { queryCustomerDimensionChartData } from '@/services/smallDemo';
+import { queryCustomerDimensionChartData, uploadFile } from '@/services/smallDemo';
 import ProForm from '@ant-design/pro-form';
 import TagPicker from '@/components/TagPicker';
 import { Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ChartCard from '@/components/ChartCard';
+import SmallReduxComponent from './SmallReduxComponent';
+import { StoreProvider } from './SmallRedux';
 import style from './SmallDemo.less';
 
 interface SmallDemoPageProp extends ConnectProps {
@@ -74,6 +76,12 @@ const SmallDemo = ({
       },
     );
   };
+  const uploadImage = async (e: File) => {
+    const formData = new FormData();
+    formData.append('file', e);
+    const data = await uploadFile(formData);
+    console.log(data);
+  };
   return (
     <div className={style['site-card-wrapper']}>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
@@ -137,6 +145,26 @@ const SmallDemo = ({
               <Upload beforeUpload={importExcelToJsonXLSX} showUploadList={false} accept=".xlsx">
                 <Button icon={<UploadOutlined />}>获取excel信息</Button>
               </Upload>
+            </Space>
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card title="图片上传" bordered={false}>
+            <Space>
+              <Upload beforeUpload={uploadImage} showUploadList={false} accept=".png,.jpeg,.jpg">
+                <Button icon={<UploadOutlined />}>上传图片</Button>
+              </Upload>
+            </Space>
+          </Card>
+        </Col>
+      </Row>
+      <Row gutter={16} style={{ marginBottom: '16px' }}>
+        <Col span={12}>
+          <Card title="小型redux" bordered={false}>
+            <Space>
+              <StoreProvider>
+                <SmallReduxComponent />
+              </StoreProvider>
             </Space>
           </Card>
         </Col>

@@ -160,8 +160,8 @@ const addAuthHeader = (url: string, options: RequestOptionsInit) => {
 const addUrlPrefix = (url: string, options: RequestOptionsInit) => {
   const headers = { ...options.headers };
   return {
-    // url: `/internal${url}`,
-    url,
+    url: `/interface${url}`,
+    // url,
     options: { ...options, headers },
   };
 };
