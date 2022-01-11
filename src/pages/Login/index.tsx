@@ -62,7 +62,7 @@ const Login: React.FC = () => {
               fieldProps={{
                 size: 'large',
               }}
-              placeholder="用户名: admin or user"
+              placeholder="用户名: 随便输"
               rules={[
                 {
                   required: true,
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
               fieldProps={{
                 size: 'large',
               }}
-              placeholder="密码: ant.design"
+              placeholder="密码: 随便输"
               rules={[
                 {
                   required: true,
