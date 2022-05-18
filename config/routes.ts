@@ -42,6 +42,11 @@
     component: './TextEditor',
   },
   {
+    name: '合并单元格表格',
+    path: '/MergeCellTable',
+    component: './MergeCellTable',
+  },
+  {
     component: './404',
   },
 ];

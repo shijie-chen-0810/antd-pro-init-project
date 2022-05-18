@@ -11,6 +11,7 @@ import ChartCard from '@/components/ChartCard';
 import SmallReduxComponent from './SmallReduxComponent';
 import { StoreProvider } from './SmallRedux';
 import style from './SmallDemo.less';
+import VideoComponent from './demoComponent/VideoComponent';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -66,10 +67,81 @@ const SmallDemo = ({
     exportExcel(header, excelList, '学生信息.xlsx');
   };
   const importExcelToJsonXLSX = (e: File) => {
-    console.log(e);
     importsExcel(e).then(
-      function (data) {
+      function (data: any) {
+        const word = [
+          {
+            gameType: 'compass',
+            title: '产品类',
+            type: 'product',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '业务类',
+            type: 'bissness',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '人员类',
+            type: 'people',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '公司类',
+            type: 'company',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '培训类',
+            type: 'train',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '常见产品类',
+            type: 'commonProducts',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '文化价值观类',
+            type: 'culturalValues',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '目标类',
+            type: 'target',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '经典事件类',
+            type: 'classicEvents',
+            words: [],
+          },
+          {
+            gameType: 'compass',
+            title: '钉钉功能类',
+            type: 'ddAbility',
+            words: [],
+          },
+        ];
         console.log(data);
+        data.forEach((item: any) => {
+          for (const key in item) {
+            word.forEach((type) => {
+              if (key === type.title) {
+                type.words.push(item[key]);
+              }
+            });
+          }
+        });
+        console.log(JSON.stringify(word));
       },
       function (data) {
         console.log(data);
@@ -166,6 +238,11 @@ const SmallDemo = ({
                 <SmallReduxComponent />
               </StoreProvider>
             </Space>
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card title="视频播放" bordered={false}>
+            <VideoComponent />
           </Card>
         </Col>
       </Row>
