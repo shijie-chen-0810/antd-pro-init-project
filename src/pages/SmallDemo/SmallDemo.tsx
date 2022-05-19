@@ -8,10 +8,11 @@ import TagPicker from '@/components/TagPicker';
 import { Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ChartCard from '@/components/ChartCard';
-import SmallReduxComponent from './SmallReduxComponent';
+import SmallReduxComponent from './demoComponent/SmallReduxComponent';
 import { StoreProvider } from './SmallRedux';
 import style from './SmallDemo.less';
 import VideoComponent from './demoComponent/VideoComponent';
+import PDFOnlineViewer from './demoComponent/PDFOnlineViewer/PDFOnlineViewer';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -69,7 +70,7 @@ const SmallDemo = ({
   const importExcelToJsonXLSX = (e: File) => {
     importsExcel(e).then(
       function (data: any) {
-        const word = [
+        const word: any = [
           {
             gameType: 'compass',
             title: '产品类',
@@ -131,17 +132,15 @@ const SmallDemo = ({
             words: [],
           },
         ];
-        console.log(data);
         data.forEach((item: any) => {
           for (const key in item) {
-            word.forEach((type) => {
+            word.forEach((type: any) => {
               if (key === type.title) {
                 type.words.push(item[key]);
               }
             });
           }
         });
-        console.log(JSON.stringify(word));
       },
       function (data) {
         console.log(data);
@@ -231,7 +230,7 @@ const SmallDemo = ({
         </Col>
       </Row>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
-        <Col span={12}>
+        <Col span={8}>
           <Card title="小型redux" bordered={false}>
             <Space>
               <StoreProvider>
@@ -240,9 +239,14 @@ const SmallDemo = ({
             </Space>
           </Card>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <Card title="视频播放" bordered={false}>
             <VideoComponent />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="PDF在线预览" bordered={false}>
+            <PDFOnlineViewer />
           </Card>
         </Col>
       </Row>

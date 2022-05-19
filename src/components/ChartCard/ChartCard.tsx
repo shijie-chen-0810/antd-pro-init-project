@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { useRequest } from 'ahooks';
+import { useRequest } from 'ahooks-v2';
 import ProCard from '@ant-design/pro-card';
 import { Form, DatePicker, Spin } from 'antd';
 import ProForm from '@ant-design/pro-form';

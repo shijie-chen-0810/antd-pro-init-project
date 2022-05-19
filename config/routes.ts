@@ -36,11 +36,11 @@
     path: '/smallDemo',
     component: './SmallDemo',
   },
-  {
-    name: '富文本编辑器',
-    path: '/textEditor',
-    component: './TextEditor',
-  },
+  // {
+  //   name: '富文本编辑器',
+  //   path: '/textEditor',
+  //   component: './TextEditor',
+  // },
   {
     name: '合并单元格表格',
     path: '/MergeCellTable',
