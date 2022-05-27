@@ -212,10 +212,10 @@ const SmallDemo = ({
       </Row>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
         <Col span={12}>
-          <Card title="图片上传" bordered={false}>
+          <Card title="文件上传" bordered={false}>
             <Space>
-              <Upload beforeUpload={uploadImage} showUploadList={false} accept=".png,.jpeg,.jpg">
-                <Button icon={<UploadOutlined />}>上传图片</Button>
+              <Upload beforeUpload={uploadImage} showUploadList={false}>
+                <Button icon={<UploadOutlined />}>文件上传</Button>
               </Upload>
             </Space>
           </Card>
