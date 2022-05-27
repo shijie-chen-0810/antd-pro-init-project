@@ -20,3 +20,19 @@ export async function uploadFile(data: any) {
     data,
   });
 }
+
+export async function uploadCutFile(data: any) {
+  // TODO 返回类型设置
+  return request('/uploadCutFile', {
+    method: 'post',
+    data,
+  });
+}
+
+export async function mergeCutFile(params: any) {
+  // TODO 返回类型设置
+  return request('/mergeCutFile', {
+    method: 'GET',
+    params,
+  });
+}

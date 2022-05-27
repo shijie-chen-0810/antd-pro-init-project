@@ -8,11 +8,11 @@ import TagPicker from '@/components/TagPicker';
 import { Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ChartCard from '@/components/ChartCard';
-import SmallReduxComponent from './demoComponent/SmallReduxComponent';
-import { StoreProvider } from './SmallRedux';
 import style from './SmallDemo.less';
 import VideoComponent from './demoComponent/VideoComponent';
 import PDFOnlineViewer from './demoComponent/PDFOnlineViewer/PDFOnlineViewer';
+import SmallRedux from './demoComponent/SmallRedux/SmallRedux';
+import FileCutUpload from './demoComponent/FileCutUpload';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -150,7 +150,9 @@ const SmallDemo = ({
   const uploadImage = async (e: File) => {
     const formData = new FormData();
     formData.append('file', e);
+    console.time('total');
     const data = await uploadFile(formData);
+    console.timeEnd('total');
     console.log(data);
   };
   return (
@@ -210,6 +212,20 @@ const SmallDemo = ({
       </Row>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
         <Col span={12}>
+          <Card title="图片上传" bordered={false}>
+            <Space>
+              <Upload beforeUpload={uploadImage} showUploadList={false} accept=".png,.jpeg,.jpg">
+                <Button icon={<UploadOutlined />}>上传图片</Button>
+              </Upload>
+            </Space>
+          </Card>
+        </Col>
+        <Col span={12}>
+          <FileCutUpload />
+        </Col>
+      </Row>
+      <Row gutter={16} style={{ marginBottom: '16px' }}>
+        <Col span={12}>
           <Card title="excel导入导出案例" bordered={false}>
             <Space>
               <Button onClick={downloadFileToExcelXLSX}>xlsx导出</Button>
@@ -219,23 +235,12 @@ const SmallDemo = ({
             </Space>
           </Card>
         </Col>
-        <Col span={12}>
-          <Card title="图片上传" bordered={false}>
-            <Space>
-              <Upload beforeUpload={uploadImage} showUploadList={false} accept=".png,.jpeg,.jpg">
-                <Button icon={<UploadOutlined />}>上传图片</Button>
-              </Upload>
-            </Space>
-          </Card>
-        </Col>
       </Row>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
         <Col span={8}>
           <Card title="小型redux" bordered={false}>
             <Space>
-              <StoreProvider>
-                <SmallReduxComponent />
-              </StoreProvider>
+              <SmallRedux />
             </Space>
           </Card>
         </Col>

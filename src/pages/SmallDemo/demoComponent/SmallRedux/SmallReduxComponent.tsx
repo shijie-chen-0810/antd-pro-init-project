@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import React from 'react';
-import { useDispatchStore, useStateStore } from '../SmallRedux';
+import { useDispatchStore, useStateStore } from './SmallReduxContext';
 
 const SmallReduxComponent: React.FC = () => {
   const stateStore = useStateStore();

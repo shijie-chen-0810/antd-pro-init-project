@@ -7,11 +7,19 @@
  * https://pro.ant.design/docs/deploy
  */
 export default {
+  // dev: {
+  //   '/interface/': {
+  //     target: 'http://42.192.228.176:3000',
+  //     changeOrigin: true,
+  //     pathRewrite: { api: '' },
+  //   },
+  // },
+  // 本地开发
   dev: {
-    '/interface/': {
-      target: 'http://42.192.228.176:3000',
+    '/api/': {
+      // target: 'http://42.192.228.176:3000',
+      target: 'http://10.255.11.252:3000',
       changeOrigin: true,
-      pathRewrite: { api: '' },
     },
   },
   test: {
