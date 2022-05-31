@@ -53,6 +53,7 @@
     "@ant-design/pro-form": "^1.18.3",
     "@ant-design/pro-layout": "^6.15.3",
     "@ant-design/pro-table": "^2.30.8",
+    "@types/spark-md5": "^3.0.2",
     "@umijs/route-utils": "^1.0.36",
     "@wangeditor/editor": "^0.12.7",
     "@wangeditor/editor-for-react": "^0.6.14",
@@ -73,6 +74,7 @@
     "react-helmet-async": "^1.0.4",
     "react-pdf": "^5.7.2",
     "react-rnd": "^10.3.5",
+    "spark-md5": "^3.0.2",
     "umi": "^3.5.0",
     "umi-serve": "^1.9.10",
     "xlsx": "^0.17.4"

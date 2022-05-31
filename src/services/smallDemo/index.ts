@@ -36,3 +36,11 @@ export async function mergeCutFile(params: any) {
     params,
   });
 }
+
+export async function verifyFile(params: any) {
+  // TODO 返回类型设置
+  return request('/verifyFile', {
+    method: 'GET',
+    params,
+  });
+}
