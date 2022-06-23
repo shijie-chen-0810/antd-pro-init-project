@@ -22,9 +22,7 @@ export default defineConfig({
   dynamicImport: {
     loading: '@ant-design/pro-layout/es/PageLoading',
   },
-  targets: {
-    ie: 11,
-  },
+  targets: false,
   // umi routes: https://umijs.org/docs/routing
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
@@ -34,7 +32,7 @@ export default defineConfig({
   // esbuild is father build tools
   // https://umijs.org/plugins/plugin-esbuild
   esbuild: {},
-  title: false,
+  title: 'hahah',
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
@@ -44,5 +42,4 @@ export default defineConfig({
   fastRefresh: {},
   nodeModulesTransform: { type: 'none' },
   webpack5: {},
-  exportStatic: {},
 });
