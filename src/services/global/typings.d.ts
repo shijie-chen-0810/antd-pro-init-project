@@ -1,5 +1,5 @@
 // import type { ProFormFieldProps } from '@ant-design/pro-form';
-
+type BaseObject<T> = Record<string, T>;
 declare namespace API {
   /** 基本返回格式 */
   type BaseRes<T> = {

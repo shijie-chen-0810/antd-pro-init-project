@@ -13,6 +13,7 @@ import VideoComponent from './demoComponent/VideoComponent';
 import PDFOnlineViewer from './demoComponent/PDFOnlineViewer/PDFOnlineViewer';
 import SmallRedux from './demoComponent/SmallRedux/SmallRedux';
 import FileCutUpload from './demoComponent/FileCutUpload';
+import TrackerTest from './demoComponent/TrackerTest';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -233,6 +234,11 @@ const SmallDemo = ({
                 <Button icon={<UploadOutlined />}>获取excel信息</Button>
               </Upload>
             </Space>
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card title="埋点组件" bordered={false}>
+            <TrackerTest />
           </Card>
         </Col>
       </Row>
