@@ -1,1 +1,32 @@
-self.importScripts("/spark-md5.min.js"),self.onmessage=f=>{const{fileChunkList:e}=f.data,t=new self.SparkMD5.ArrayBuffer;let a=0,s=0;const r=o=>{const l=new FileReader;l.readAsArrayBuffer(e[o].file),l.onload=p=>{var n;s++,t.append((n=p.target)==null?void 0:n.result),s===e.length?(self.postMessage({percentage:100,hash:t.end()}),self.close()):(a+=100/e.length,self.postMessage({percentage:a}),r(s))}};r(0)};
+// 导入脚本
+self.importScripts("/spark-md5.min.js");
+// 生成文件 hash
+self.onmessage = (e) => {
+  const { fileChunkList } = e.data;
+  const spark = new self.SparkMD5.ArrayBuffer();
+  let percentage = 0;
+  let count = 0;
+  const loadNext = (index) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(fileChunkList[index].file);
+    reader.onload = (readerEvent) => {
+      count++;
+      spark.append(readerEvent.target?.result);
+      if (count === fileChunkList.length) {
+        self.postMessage({
+          percentage: 100,
+          hash: spark.end(),
+        });
+        self.close();
+      } else {
+        percentage += 100 / fileChunkList.length;
+        self.postMessage({
+          percentage,
+        });
+        // calculate recursively
+        loadNext(count);
+      }
+    };
+  };
+  loadNext(0);
+};

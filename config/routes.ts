@@ -42,6 +42,11 @@
   //   component: './TextEditor',
   // },
   {
+    name: 'Slate富文本编辑器',
+    path: '/slateTextEditor',
+    component: './SlateTextEditor',
+  },
+  {
     name: '合并单元格表格',
     path: '/MergeCellTable',
     component: './MergeCellTable',

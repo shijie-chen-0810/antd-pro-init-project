@@ -38,8 +38,14 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
+  devServer: {
+    port: 8010,
+  },
   // Fast Refresh 热更新
   fastRefresh: {},
   nodeModulesTransform: { type: 'none' },
-  webpack5: {},
+  // 开启后热更新会闪屏
+  // webpack5: {},
+  // 开启后热更新子组件失效
+  // mfsu: {},
 });
