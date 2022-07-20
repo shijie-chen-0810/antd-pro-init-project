@@ -6,11 +6,15 @@ import RightContent from '@/components/RightContent';
 import { currentUser as queryCurrentUser } from './services/login';
 import { notification } from 'antd';
 import type { RequestOptionsInit, ResponseError } from 'umi-request';
+import Quill from 'quill';
+import ImageResize from 'quill-image-resize-module';
 import logo from '@/assets/imgs/logo.png';
 import * as qs from 'qs';
 import routes from '../config/routes';
 
 const loginPath = '/login';
+// 注册时 ImageResize 首字母需要大写
+Quill.register('modules/ImageResize', ImageResize);
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {

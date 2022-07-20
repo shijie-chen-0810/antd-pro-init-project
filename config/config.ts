@@ -1,6 +1,5 @@
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
-
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
@@ -48,4 +47,20 @@ export default defineConfig({
   // webpack5: {},
   // 开启后热更新子组件失效
   // mfsu: {},
+  // plugins: [
+  //   new webpack.ProvidePlugin({
+  //     // 在这儿添加下面两行
+  //     'window.Quill': 'quill/dist/quill.js',
+  //     Quill: 'quill/dist/quill.js',
+  //   }),
+  // ],
+  chainWebpack(config, { webpack }) {
+    const quillPlugin = new webpack.ProvidePlugin({
+      // 在这儿添加下面两行
+      'window.Quill': 'quill/dist/quill.js',
+      Quill: 'quill/dist/quill.js',
+    });
+    // config.plugins.set('quill', quillPlugin);
+    config.plugin('quill').use(quillPlugin);
+  },
 });
