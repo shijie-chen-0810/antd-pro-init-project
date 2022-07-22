@@ -63,6 +63,7 @@
     "bizcharts": "^4.1.14",
     "classnames": "^2.2.6",
     "cropperjs": "^1.5.12",
+    "konva": "^8.3.10",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",
     "omit.js": "^2.0.2",
@@ -79,6 +80,7 @@
     "spark-md5": "^3.0.2",
     "umi": "^3.5.0",
     "umi-serve": "^1.9.10",
+    "uuid": "^8.3.2",
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
@@ -91,6 +93,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-helmet": "^6.1.0",
     "@types/react-pdf": "^5.7.2",
+    "@types/uuid": "^8.3.4",
     "@umijs/fabric": "^2.6.2",
     "@umijs/openapi": "^1.1.14",
     "@umijs/plugin-blocks": "^2.0.5",

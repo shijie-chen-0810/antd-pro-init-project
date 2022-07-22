@@ -1,13 +1,11 @@
 import { useMemo, useRef, useState } from 'react';
-
 import ReactQuill, { Quill } from 'react-quill';
-
 import type { Value } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Button, Space } from 'antd';
 import style from './QuillTextEditor.less';
-const Delta = Quill.import('delta');
 
+const Delta = Quill.import('delta');
 const defaultDelta = new Delta([
   { insert: 'as' },
   { attributes: { color: '#e60000' }, insert: 'daadsasd' },
@@ -61,7 +59,6 @@ const QuillTextEditor = () => {
           ['link', 'image', 'video'],
         ],
         handlers: {
-          // 'image':this.selectImage.bind(this)
           image: () => {
             handleInsertImage();
           },
@@ -131,6 +128,7 @@ const QuillTextEditor = () => {
           ]}
           value={value}
           onChange={(val) => setValue(val)}
+          // 让空格生效
           className="ql-editor"
         />
       </div>
@@ -140,6 +138,7 @@ const QuillTextEditor = () => {
           dangerouslySetInnerHTML={{
             __html: value as string,
           }}
+          // 让空格生效
           className="ql-editor"
         />
       </div>

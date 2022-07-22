@@ -32,6 +32,11 @@
     component: './ImageEdit/components/WatermakerImage',
   },
   {
+    path: '/imageEdit/editImageWithKonva',
+    component: './ImageEdit/components/EditImageWithKonva',
+  },
+
+  {
     name: '案例库',
     path: '/smallDemo',
     component: './SmallDemo',

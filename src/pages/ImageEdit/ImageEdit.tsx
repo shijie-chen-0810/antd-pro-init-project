@@ -47,6 +47,17 @@ const ImageCrop: React.FC = () => {
         >
           去添加
         </Button>
+        <Button
+          type="primary"
+          onClick={() =>
+            history.push({
+              pathname: '/imageEdit/editImageWithKonva',
+              state: { imgIndex: cropImage },
+            })
+          }
+        >
+          Konva处理
+        </Button>
       </Space>
     </>
   );
