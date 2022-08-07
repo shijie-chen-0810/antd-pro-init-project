@@ -6,7 +6,7 @@ import type { SliderMarks } from 'antd/es/slider';
 import { useLocation } from 'umi';
 import { imgList } from '@/utils/varlable';
 import style from './EditImageWithKonva.less';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Konva from 'konva';
 import type { Stage } from 'konva/lib/Stage';
 import type { Layer } from 'konva/lib/Layer';
@@ -38,6 +38,8 @@ const EditImageWithKonva = () => {
   const [curOpration, setCurOpration] = useState<OprationArr>();
   const [konvaStage, setKonvaState] = useState<Stage>();
   const [konvaLayer, setKonvaLayer] = useState<Layer>();
+  const [curShape, setCurShape] = useState<any>();
+  const konvaCircleMenuRef = useRef<HTMLDivElement>(null);
   const imgUrl = imgList[imgIndex].url;
 
   const initKonva = () => {
@@ -55,6 +57,12 @@ const EditImageWithKonva = () => {
         y: deltaY / 1000 + originScaleX,
       });
       layer.batchDraw();
+    });
+    layer.on('click', (e) => {
+      e.evt.preventDefault();
+      if (konvaCircleMenuRef.current) {
+        konvaCircleMenuRef.current.style.display = 'none';
+      }
     });
     stage.add(layer);
     setKonvaLayer(layer);
@@ -139,10 +147,19 @@ const EditImageWithKonva = () => {
           draggable: true,
           state: { id: circleUuId },
         });
-        konvaCircle.on('click', (clickEvent: KonvaEventObject<MouseEvent>) => {
-          clickEvent.evt.preventDefault();
-          const { target } = clickEvent;
-          console.log(target);
+        // konvaCircle.on('click', (clickEvent: KonvaEventObject<MouseEvent>) => {
+        //   clickEvent.evt.preventDefault();
+        //   console.log(clickEvent, 'click');
+        // });
+        konvaCircle.on('contextmenu', (contextmenuEvent: KonvaEventObject<MouseEvent>) => {
+          contextmenuEvent.evt.preventDefault();
+          const { offsetX: contextmenuOffsetX, offsetY: contextmenuOffsetY } = contextmenuEvent.evt;
+          if (konvaCircleMenuRef.current) {
+            setCurShape(contextmenuEvent.target);
+            konvaCircleMenuRef.current.style.display = 'block';
+            konvaCircleMenuRef.current.style.left = `${contextmenuOffsetX + 4}px`;
+            konvaCircleMenuRef.current.style.top = `${contextmenuOffsetY + 4}px`;
+          }
         });
         konvaLayer.add(konvaCircle);
         konvaLayer.on(
@@ -238,8 +255,19 @@ const EditImageWithKonva = () => {
     });
   }, [konvaLayer, konvaStage]);
 
-  // const handleRedo = useCallback(() => {}, []);
-  // const handleUndo = useCallback(() => {}, []);
+  const showCircleId = useCallback(() => {
+    const { attrs } = curShape || {};
+    message.info(attrs?.id);
+    if (konvaCircleMenuRef.current) {
+      konvaCircleMenuRef.current.style.display = 'none';
+    }
+  }, [curShape]);
+  const deleteCircle = useCallback(() => {
+    curShape?.destroy();
+    if (konvaCircleMenuRef.current) {
+      konvaCircleMenuRef.current.style.display = 'none';
+    }
+  }, [curShape]);
 
   const handleOprate = useCallback(
     (e: RadioChangeEvent) => {
@@ -285,6 +313,10 @@ const EditImageWithKonva = () => {
       />
       <div className={style.main}>
         <div id="konva-canvas" />
+        <div ref={konvaCircleMenuRef} className={style['konva-circle-menu']}>
+          <div onClick={() => showCircleId()}>showID</div>
+          <div onClick={() => deleteCircle()}>delete</div>
+        </div>
         <div className={style.btns}>
           <Radio.Group className={style['konva-btns']} value={curOpration} onChange={handleOprate}>
             <Radio.Button value={OprationArr.insertImage}>插入图片</Radio.Button>

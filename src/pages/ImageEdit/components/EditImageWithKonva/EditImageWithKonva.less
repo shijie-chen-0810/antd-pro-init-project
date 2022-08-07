@@ -5,6 +5,7 @@
   background-color: #fff;
 }
 .main {
+  position: relative;
   width: 500px;
   height: 500px;
   margin: 0 auto;
@@ -13,4 +14,24 @@
 .btns {
   display: flex;
   justify-content: space-between;
+}
+.konva-circle-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100px;
+  text-align: center;
+  border: 1px solid #ccc;
+  > div {
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+  }
+  > div:last-child {
+    border: none;
+  }
+  > div:hover {
+    color: #fff;
+    background-color: #43bcff;
+  }
 }
