@@ -44,3 +44,11 @@ export async function verifyFile(params: any) {
     params,
   });
 }
+
+export async function formatResultService(params: { code: string }) {
+  // TODO 返回类型设置
+  return request<API.BaseRes<{ info: { status: boolean } }>>('/formatResultService', {
+    method: 'GET',
+    params,
+  });
+}

@@ -21,7 +21,7 @@ const VideoComponent: React.FC = () => {
         <Button onClick={start}>开启</Button>
         <Button onClick={close}>关闭</Button>
       </Space>
-      <video ref={videoRef} style={{ opacity: 0.1 }} />
+      <video ref={videoRef} style={{ opacity: 1 }} />
     </div>
   );
 };

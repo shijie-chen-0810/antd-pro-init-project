@@ -14,6 +14,7 @@ import PDFOnlineViewer from './demoComponent/PDFOnlineViewer/PDFOnlineViewer';
 import SmallRedux from './demoComponent/SmallRedux/SmallRedux';
 import FileCutUpload from './demoComponent/FileCutUpload';
 import TrackerTest from './demoComponent/TrackerTest';
+import CustomUseRequest from './demoComponent/CustomUseRequest';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -226,7 +227,7 @@ const SmallDemo = ({
         </Col>
       </Row>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
-        <Col span={12}>
+        <Col span={8}>
           <Card title="excel导入导出案例" bordered={false}>
             <Space>
               <Button onClick={downloadFileToExcelXLSX}>xlsx导出</Button>
@@ -236,9 +237,14 @@ const SmallDemo = ({
             </Space>
           </Card>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <Card title="埋点组件" bordered={false}>
             <TrackerTest />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="自定义useRequest" bordered={false}>
+            <CustomUseRequest />
           </Card>
         </Col>
       </Row>

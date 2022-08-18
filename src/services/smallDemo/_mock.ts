@@ -117,4 +117,16 @@ export default {
       result: resultData,
     });
   },
+  'GET /api/formatResultService': async (req: Request, res: Response) => {
+    await waitTime(1000);
+    res.send({
+      code: 200,
+      message: 'success',
+      result: {
+        info: {
+          status: true,
+        },
+      },
+    });
+  },
 };

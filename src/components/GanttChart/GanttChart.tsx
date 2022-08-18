@@ -10,14 +10,26 @@ const cellEnd = 1320;
 
 const onePercentWidth = 1 / (1320 - 540);
 
-type GanttChartProps = {
-  title: React.ReactNode;
-  data: { date: string; deployDate: string[] }[];
+const TypeRGB = {
+  receive: '104, 211, 100',
+  input: '255, 61, 78',
 };
 
-const GanttChart: React.FC<GanttChartProps> = ({ title, data }) => {
+type TimeInfo = {
+  time: string;
+  name?: string;
+  type?: string;
+};
+
+type GanttChartProps = {
+  title: React.ReactNode;
+  loading?: boolean;
+  data?: { firstColumn: string; deployTimes: TimeInfo[] }[];
+};
+
+const GanttChart: React.FC<GanttChartProps> = ({ title, loading, data = [] }) => {
   const renderTableCell = (record: any) => {
-    const { deployDate = [] } = record;
+    const { deployTimes = [] } = record;
     const analysisDate = (originDate: string) => {
       const timeStamp = new Date(originDate).getTime();
       const hour = new Date(originDate).getHours();
@@ -43,28 +55,37 @@ const GanttChart: React.FC<GanttChartProps> = ({ title, data }) => {
         left,
       };
     };
-    return deployDate.map((date: string) => {
-      const { deployTime, startTime, endTime, width, left } = analysisDate(date);
+    return deployTimes?.map((timeInfo: TimeInfo) => {
+      const { deployTime, startTime, endTime, width, left } = analysisDate(timeInfo.time);
+      const color = timeInfo.type ? TypeRGB[timeInfo.type] : '104, 211, 100';
+      const customerName = timeInfo?.name || '';
       return (
-        <div
-          key={date}
-          className={cs(style['one-line'], style['deploy-cell'])}
-          style={{ width, left }}
+        <Tooltip
+          color={`rgba(${color}, 0.9)`}
+          key={timeInfo.name + timeInfo.time}
+          title={
+            <>
+              <div>{`${customerName}`}</div>
+              <div>{`布署时间:${deployTime}`}</div>
+              <div>{`开始时间:${startTime}`}</div>
+              <div>{`结束时间:${endTime}`}</div>
+            </>
+          }
         >
-          <Tooltip
-            title={
-              <>
-                {`布属时间:${deployTime}`}
-                <br />
-                {`开始时间:${startTime}`}
-                <br />
-                {`结束时间:${endTime}`}
-              </>
-            }
+          <div
+            className={cs(style['one-line'], style['deploy-cell'])}
+            style={{
+              width,
+              left,
+              backgroundColor: `rgba(${color}, 0.5)`,
+              border: `1px dashed rgb(${color})`,
+            }}
           >
-            <span style={{ backgroundColor: '#b7e9ca' }}>{'布属时间:' + deployTime}</span>
-          </Tooltip>
-        </div>
+            <span style={{ backgroundColor: `rgba(${color}, 0.7)` }}>
+              {'布署时间:' + deployTime}
+            </span>
+          </div>
+        </Tooltip>
       );
     });
   };
@@ -72,9 +93,9 @@ const GanttChart: React.FC<GanttChartProps> = ({ title, data }) => {
   const columns: ColumnsType<any> = [
     {
       title,
-      dataIndex: 'date',
+      dataIndex: 'firstColumn',
       ellipsis: true,
-      width: 100,
+      width: 135,
       fixed: 'left',
     },
     {
@@ -83,10 +104,10 @@ const GanttChart: React.FC<GanttChartProps> = ({ title, data }) => {
       width: '50px',
       className: style['cell-container'],
       render: (_, record) => {
-        return {
-          children: renderTableCell(record),
-          props: { colSpan: 13 },
-        };
+        return renderTableCell(record);
+      },
+      onCell: () => {
+        return { colSpan: 13 };
       },
     },
     ...(() =>
@@ -94,10 +115,10 @@ const GanttChart: React.FC<GanttChartProps> = ({ title, data }) => {
         title: col,
         width: '50px',
         render: () => {
-          return {
-            children: '',
-            props: { colSpan: 0 },
-          };
+          return '';
+        },
+        onCell: () => {
+          return { colSpan: 0 };
         },
       })))(),
   ];
@@ -106,8 +127,12 @@ const GanttChart: React.FC<GanttChartProps> = ({ title, data }) => {
     <Table
       className={style['table-container']}
       columns={columns}
+      locale={{
+        emptyText: <div className={style['table-empty-cell']}>今日没有布署日程</div>,
+      }}
       size={'small'}
-      rowKey="date"
+      loading={loading}
+      rowKey="firstColumn"
       pagination={false}
       tableLayout="fixed"
       scroll={{ x: 750 }}

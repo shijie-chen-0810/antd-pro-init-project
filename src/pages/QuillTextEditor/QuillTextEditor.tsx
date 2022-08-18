@@ -4,6 +4,12 @@ import type { Value } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Button, Space } from 'antd';
 import style from './QuillTextEditor.less';
+// 注册时 ImageResize 首字母需要大写
+import ImageResize from 'quill-image-resize-module';
+Quill.register('modules/ImageResize', ImageResize);
+const fontSizeStyle = Quill.import('attributors/style/size'); //引入这个后会把样式写在style上
+fontSizeStyle.whitelist = ['14px', '12px', '16px', '18px'];
+Quill.register(fontSizeStyle, true);
 
 const Delta = Quill.import('delta');
 const defaultDelta = new Delta([
@@ -28,7 +34,11 @@ const defaultDelta = new Delta([
     },
   },
 ]);
-
+const aa = {
+  toolbar: {
+    container: [],
+  },
+};
 // 示例代码:https://codesandbox.io/s/quill-sandbox-forked-s0pdi5
 const QuillTextEditor = () => {
   const [value, setValue] = useState<Value>('');
@@ -51,8 +61,8 @@ const QuillTextEditor = () => {
     () => ({
       toolbar: {
         container: [
-          [{ header: '1' }, { header: '2' }, { font: [] }],
-          [{ size: [] }],
+          [{ header: [1, 2, 3, false] }],
+          [{ size: ['14px', '12px', '16px', '18px'] }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
           [{ color: [] }, { background: [] }],
           [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
@@ -61,6 +71,9 @@ const QuillTextEditor = () => {
         handlers: {
           image: () => {
             handleInsertImage();
+          },
+          video: () => {
+            console.log('insert video');
           },
         },
       },
@@ -82,7 +95,14 @@ const QuillTextEditor = () => {
     reactQuillRef.current?.editor?.setContents(defaultDelta);
   };
   return (
-    <div className={style.container}>
+    <div
+      id="quill"
+      onSelect={(e) => {
+        e.preventDefault();
+        console.log('onSelect');
+      }}
+      className={style.container}
+    >
       <div className={style['left-panel']}>
         <Space style={{ margin: '10px 0' }}>
           <Button type="primary" onClick={() => setQuillContent()}>
@@ -134,10 +154,30 @@ const QuillTextEditor = () => {
       </div>
       <div className={style['right-panel']}>
         <h4>quill回显Html</h4>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: value as string,
-          }}
+        <ReactQuill
+          theme="snow"
+          modules={aa}
+          formats={[
+            'header',
+            'font',
+            'size',
+            'bold',
+            'italic',
+            'underline',
+            'strike',
+            'blockquote',
+            'background',
+            'color',
+            'list',
+            'bullet',
+            'indent',
+            'link',
+            'image',
+            'video',
+            'width',
+          ]}
+          value={value}
+          readOnly
           // 让空格生效
           className="ql-editor"
         />
