@@ -46,11 +46,11 @@
   //   path: '/textEditor',
   //   component: './TextEditor',
   // },
-  {
-    name: 'Quill富文本编辑器',
-    path: '/quillTextEditor',
-    component: './QuillTextEditor',
-  },
+  // {
+  //   name: 'Quill富文本编辑器',
+  //   path: '/quillTextEditor',
+  //   component: './QuillTextEditor',
+  // },
   {
     name: '合并单元格表格',
     path: '/MergeCellTable',

@@ -15,6 +15,7 @@ import SmallRedux from './demoComponent/SmallRedux/SmallRedux';
 import FileCutUpload from './demoComponent/FileCutUpload';
 import TrackerTest from './demoComponent/TrackerTest';
 import CustomUseRequest from './demoComponent/CustomUseRequest';
+import RichTextDrawer from './demoComponent/RichTextDrawer';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -213,7 +214,7 @@ const SmallDemo = ({
         </Col>
       </Row>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
-        <Col span={12}>
+        <Col span={8}>
           <Card title="文件上传" bordered={false}>
             <Space>
               <Upload beforeUpload={uploadImage} showUploadList={false}>
@@ -222,8 +223,11 @@ const SmallDemo = ({
             </Space>
           </Card>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <FileCutUpload />
+        </Col>
+        <Col span={8}>
+          <RichTextDrawer />
         </Col>
       </Row>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
