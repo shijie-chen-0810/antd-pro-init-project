@@ -21,7 +21,7 @@ const CustomUseRequest = () => {
       <Button onClick={() => runFormatResult({ code: '123' })} loading={formatResultLoading}>
         formatResultEmit
       </Button>
-      <span>{formatResultData ? 'true' : 'false'}</span>
+      <span>{formatResultData ? 'true123' : 'false'}</span>
     </div>
   );
 };
