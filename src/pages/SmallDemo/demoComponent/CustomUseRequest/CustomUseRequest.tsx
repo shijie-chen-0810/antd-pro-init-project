@@ -12,7 +12,7 @@ const CustomUseRequest = () => {
   } = useFormatResultRequest(formatResultService, {
     manual: true,
     formatResult: (res) => {
-      return res.result.info.status;
+      return res;
     },
   });
 
