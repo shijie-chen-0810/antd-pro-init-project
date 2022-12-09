@@ -1,9 +1,9 @@
 ﻿export default [
-  // {
-  //   path: '/login',
-  //   layout: false,
-  //   component: './Login',
-  // },
+  {
+    path: '/login',
+    layout: false,
+    component: './Login',
+  },
   {
     path: '/',
     redirect: '/home',
@@ -13,28 +13,28 @@
     path: '/home',
     component: './Home',
   },
-  // {
-  //   name: '表格页',
-  //   path: '/table',
-  //   component: './TableList',
-  // },
-  // {
-  //   name: '图片编辑器',
-  //   path: '/imageEdit',
-  //   component: './ImageEdit/index',
-  // },
-  // {
-  //   path: '/imageEdit/crop',
-  //   component: './ImageEdit/components/CropImage',
-  // },
-  // {
-  //   path: '/imageEdit/watermaker',
-  //   component: './ImageEdit/components/WatermakerImage',
-  // },
-  // {
-  //   path: '/imageEdit/editImageWithKonva',
-  //   component: './ImageEdit/components/EditImageWithKonva',
-  // },
+  {
+    name: '表格页',
+    path: '/table',
+    component: './TableList',
+  },
+  {
+    name: '图片编辑器',
+    path: '/imageEdit',
+    component: './ImageEdit/index',
+  },
+  {
+    path: '/imageEdit/crop',
+    component: './ImageEdit/components/CropImage',
+  },
+  {
+    path: '/imageEdit/watermaker',
+    component: './ImageEdit/components/WatermakerImage',
+  },
+  {
+    path: '/imageEdit/editImageWithKonva',
+    component: './ImageEdit/components/EditImageWithKonva',
+  },
 
   // {
   //   name: '案例库',
@@ -51,12 +51,12 @@
   //   path: '/quillTextEditor',
   //   component: './QuillTextEditor',
   // },
-  // {
-  //   name: '合并单元格表格',
-  //   path: '/MergeCellTable',
-  //   component: './MergeCellTable',
-  // },
-  // {
-  //   component: './404',
-  // },
+  {
+    name: '合并单元格表格',
+    path: '/MergeCellTable',
+    component: './MergeCellTable',
+  },
+  {
+    component: './404',
+  },
 ];
