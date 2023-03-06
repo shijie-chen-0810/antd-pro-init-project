@@ -16,6 +16,7 @@ import FileCutUpload from './demoComponent/FileCutUpload';
 import TrackerTest from './demoComponent/TrackerTest';
 import CustomUseRequest from './demoComponent/CustomUseRequest';
 import RichTextDrawer from './demoComponent/RichTextDrawer';
+import Outbound from './demoComponent/Outbound';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -161,7 +162,7 @@ const SmallDemo = ({
   return (
     <div className={style['site-card-wrapper']}>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
-        <Col span={12}>
+        <Col span={8}>
           <Card title="Dva案例" bordered={false}>
             <Row>
               <Col span={6}>{String(globalStatus)}</Col>
@@ -190,7 +191,7 @@ const SmallDemo = ({
             </Row>
           </Card>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <Card title="自定义表单案例" bordered={false}>
             <ProForm
               className="filter_form"
@@ -210,6 +211,11 @@ const SmallDemo = ({
                 </Space>
               </ProForm.Item>
             </ProForm>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="外呼" bordered={false}>
+            <Outbound />
           </Card>
         </Col>
       </Row>

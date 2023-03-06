@@ -63,4 +63,6 @@ export default defineConfig({
     // config.plugins.set('quill', quillPlugin);
     config.plugin('quill').use(quillPlugin);
   },
+  plugins: ['lodash-webpack-plugin'],
+  extraBabelPlugins: ['lodash'],
 });

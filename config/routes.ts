@@ -36,11 +36,11 @@
     component: './ImageEdit/components/EditImageWithKonva',
   },
 
-  // {
-  //   name: '案例库',
-  //   path: '/smallDemo',
-  //   component: './SmallDemo',
-  // },
+  {
+    name: '案例库',
+    path: '/smallDemo',
+    component: './SmallDemo',
+  },
   // {
   //   name: '富文本编辑器',
   //   path: '/textEditor',
