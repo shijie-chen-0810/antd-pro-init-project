@@ -31,5 +31,6 @@ interface Window {
     default: any;
   };
   HotlineClientUI: any;
-  HotlineClientUI: any;
+  HotlineClientUi: any;
+  renderHotlineClientUI: any;
 }

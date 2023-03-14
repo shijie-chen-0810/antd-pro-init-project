@@ -15,29 +15,19 @@ const config = {
   logLevel: 1,
 };
 
-const HotlineClientUI = window.HotlineClientUI;
+// const HotlineClientUI = window.HotlineClientUI;
 const Outbound = () => {
   // const { useClient, HotlineClientUI } = window.HotlineClientUi;
   // const info = useClient(config);
   // console.log(info);
   useEffect(() => {
-    // window.HotlineClientUi.renderClient(document.getElementById('out'), config);
-    // const { FuYunHotlineClient } = window.HotlineClientFuyun;
-    // console.log(FuYunHotlineClient);
-    // const client = new FuYunHotlineClient(config);
-    // console.log(client); // 其他框架的链接
-    // const getHotlineClientSDK = window.HotlineClientApi.default;
-    // window.renderHotlineClientUI(document.getElementById('out'), config);
-    // const SDK = getHotlineClientSDK(config);
-    // console.log(SDK, 'SDK');
-    // console.log(SDK.client, 'SDK.client'); // 获取client。
-    // console.log(SDK.agent, 'SDK.agent'); // 获取agent。
-    // console.log(SDK.call, 'SDK.call'); // 获取call。
-    // console.log(SDK.enableState, 'SDK.enableState'); //获取使能状态。
+    window.renderHotlineClientUI(document.getElementById('out'), config);
   }, []);
   return (
     <div>
-      <div id="out">123</div>
+      <div id="out" style={{ width: '100%', height: '100px' }}>
+        <span>123</span>
+      </div>
       <button
         onClick={() => {
           // info.checkIn();
@@ -45,8 +35,7 @@ const Outbound = () => {
       >
         checkIn
       </button>
-      {/* <div>123</div> */}
-      <HotlineClientUI {...config} />
+      {/* <HotlineClientUI {...config} /> */}
     </div>
   );
 };
