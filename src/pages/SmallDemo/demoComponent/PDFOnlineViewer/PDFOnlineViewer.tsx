@@ -15,7 +15,7 @@ const PDFOnlineViewer = () => {
   return (
     <>
       <Button onClick={() => setVisible(true)}>打开</Button>
-      <Modal footer={null} width="800px" visible={visible} onCancel={() => setVisible(false)}>
+      <Modal footer={null} width="800px" open={visible} onCancel={() => setVisible(false)}>
         <Document
           file="https://invoiceprod.oss-cn-shanghai.aliyuncs.com/invoice/invoice-test/202205/2wbamfpcnzjr.pdf"
           onLoadSuccess={onDocumentLoadSuccess}

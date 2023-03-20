@@ -396,7 +396,7 @@ const TagPicker: React.FC<TagPickerProps> = ({ value, fieldProps, ...resArg }) =
       <Modal
         title="客户标签"
         width={560}
-        visible={visible}
+        open={visible}
         onCancel={() => setVisible(false)}
         onOk={() => onSubmit()}
       >

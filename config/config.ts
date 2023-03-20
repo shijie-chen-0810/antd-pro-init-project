@@ -72,10 +72,8 @@ export default defineConfig({
     'react-dom': 'ReactDOM',
   },
   styles: [
-    'https://at.alicdn.com/t/font_1263869_rz6l63j0yrp.css',
     'https://g.alicdn.com/xixi-design/xixi-design/2.7.0/index.css',
     'https://g.alicdn.com/code/lib/antd/4.23.0/antd.min.css',
-    'https://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.3/hotline-client-ui/index.css',
   ],
   headScripts: [
     'https://g.alicdn.com/code/lib/react/17.0.2/umd/react.development.min.js',
@@ -85,11 +83,9 @@ export default defineConfig({
   ],
   scripts: [
     'https://g.alicdn.com/antelope/phone-sdk/1.1.0/phone-ui.js',
-    // 'https://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.3/hotline-client-ui/index.js',
     // 'http://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.5/hotline-client-ui/index.js',
     // 'https://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.5/hotline-client-fuyun/index.js',
     // 'http://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.5/hotline-client-check-tools/index.js',
-    // 'http://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.5/hotline-client-ui/index.js',
   ],
 });
 

@@ -2,7 +2,9 @@ import RichTextEditor from '@/components/RichTextEditor';
 import { Button, Card, Drawer, Form } from 'antd';
 import { useState } from 'react';
 
+// const RichTextEditor = import(/** aa*/ '@/components/RichTextEditor');
 const RichTextDrawer = () => {
+  console.log(RichTextEditor, 'RichTextEditor');
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [form] = Form.useForm();
   const handleFormSubmit = (value: any) => {
@@ -15,7 +17,7 @@ const RichTextDrawer = () => {
       </Card>
       <Drawer
         destroyOnClose
-        visible={drawerVisible}
+        open={drawerVisible}
         title="富文本表单"
         width={600}
         onClose={() => setDrawerVisible(false)}
