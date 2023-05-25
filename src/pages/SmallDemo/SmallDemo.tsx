@@ -16,8 +16,9 @@ import FileCutUpload from './demoComponent/FileCutUpload';
 import TrackerTest from './demoComponent/TrackerTest';
 import CustomUseRequest from './demoComponent/CustomUseRequest';
 import RichTextDrawer from './demoComponent/RichTextDrawer';
-import Outbound from './demoComponent/Outbound';
+// import Outbound from './demoComponent/Outbound';
 import TableFormComp from './demoComponent/TableFormComp';
+import AudioPlayerComp from './demoComponent/AudioPlayerComp';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -163,7 +164,7 @@ const SmallDemo = ({
   return (
     <div className={style['site-card-wrapper']}>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
-        <Col span={24}>
+        <Col span={24} style={{ backgroundColor: '#fff' }}>
           <TableFormComp />
         </Col>
       </Row>
@@ -220,8 +221,8 @@ const SmallDemo = ({
           </Card>
         </Col>
         <Col span={8}>
-          <Card title="外呼" bordered={false}>
-            <Outbound />
+          <Card title="useSound" bordered={false}>
+            <AudioPlayerComp />
           </Card>
         </Col>
       </Row>
