@@ -17,6 +17,7 @@ import TrackerTest from './demoComponent/TrackerTest';
 import CustomUseRequest from './demoComponent/CustomUseRequest';
 import RichTextDrawer from './demoComponent/RichTextDrawer';
 import Outbound from './demoComponent/Outbound';
+import TableFormComp from './demoComponent/TableFormComp';
 
 interface SmallDemoPageProp extends ConnectProps {
   globalStatus: boolean;
@@ -161,6 +162,11 @@ const SmallDemo = ({
   };
   return (
     <div className={style['site-card-wrapper']}>
+      <Row gutter={16} style={{ marginBottom: '16px' }}>
+        <Col span={24}>
+          <TableFormComp />
+        </Col>
+      </Row>
       <Row gutter={16} style={{ marginBottom: '16px' }}>
         <Col span={8}>
           <Card title="Dva案例" bordered={false}>

@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 // const RichTextEditor = import(/** aa*/ '@/components/RichTextEditor');
 const RichTextDrawer = () => {
-  console.log(RichTextEditor, 'RichTextEditor');
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [form] = Form.useForm();
   const handleFormSubmit = (value: any) => {
