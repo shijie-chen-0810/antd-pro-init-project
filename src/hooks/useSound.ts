@@ -32,7 +32,14 @@ const useSound = (url: string) => {
     clearInterval(intervalRef.current);
   };
 
-  const changeProgress = (value: number) => {
+  const changeProgress = (_value: number) => {
+    let value: number = _value;
+    if (_value > duration) {
+      value = duration;
+    }
+    if (_value < 0) {
+      value = 0;
+    }
     // Clear any timers already running
     clearInterval(intervalRef.current);
     if (audioEle) {
