@@ -35,7 +35,10 @@
     path: '/imageEdit/editImageWithKonva',
     component: './ImageEdit/components/EditImageWithKonva',
   },
-
+  {
+    path: '/imageEdit/makeWarReport',
+    component: './ImageEdit/components/MakeWarReport',
+  },
   {
     name: '案例库',
     path: '/smallDemo',

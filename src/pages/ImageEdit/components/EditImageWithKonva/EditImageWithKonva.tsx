@@ -1,5 +1,4 @@
-import { LeftOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Radio, Slider } from 'antd';
+import { message, Radio, Slider } from 'antd';
 import { v4 as uuid } from 'uuid';
 import type { RadioChangeEvent } from 'antd';
 import type { SliderMarks } from 'antd/es/slider';
@@ -15,6 +14,7 @@ import type { Circle } from 'konva/lib/shapes/Circle';
 import type { Rect } from 'konva/lib/shapes/Rect';
 import type { Transformer } from 'konva/lib/shapes/Transformer';
 import _ from 'lodash';
+import SecondPageWrapper from '../SecondPageWrapper';
 
 enum OprationArr {
   insertImage = 'INSERTIMAGE',
@@ -293,12 +293,7 @@ const EditImageWithKonva = () => {
     initKonva();
   }, []);
   return (
-    <div className={style.container}>
-      <Button onClick={() => history.go(-1)} type="link">
-        <LeftOutlined />
-        返回
-      </Button>
-      <Divider style={{ margin: '5px 0 20px' }} />
+    <SecondPageWrapper>
       <Slider
         style={{
           margin: '0 auto 28px',
@@ -324,16 +319,16 @@ const EditImageWithKonva = () => {
             <Radio.Button value={OprationArr.chooseNode}>选择</Radio.Button>
           </Radio.Group>
           {/* <Space className={style['opration-btn']}>
-            <Button onClick={handleUndo}>
-              <UndoOutlined />
-            </Button>
-            <Button onClick={handleRedo}>
-              <RedoOutlined />
-            </Button>
-          </Space> */}
+              <Button onClick={handleUndo}>
+                <UndoOutlined />
+              </Button>
+              <Button onClick={handleRedo}>
+                <RedoOutlined />
+              </Button>
+            </Space> */}
         </div>
       </div>
-    </div>
+    </SecondPageWrapper>
   );
 };
 export default EditImageWithKonva;

@@ -58,6 +58,17 @@ const ImageCrop: React.FC = () => {
         >
           Konva处理
         </Button>
+        <Button
+          type="primary"
+          onClick={() =>
+            history.push({
+              pathname: '/imageEdit/makeWarReport',
+              state: { imgIndex: cropImage },
+            })
+          }
+        >
+          做战报
+        </Button>
       </Space>
     </>
   );

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Button, Divider, Space, Row, Col } from 'antd';
-import { useHistory, useLocation } from 'react-router';
-import { LeftOutlined } from '@ant-design/icons';
+import { Button, Space, Row, Col } from 'antd';
+import { useLocation } from 'react-router';
 import { imgList } from '@/utils/varlable';
 import style from './WatermakerImage.less';
 import { Rnd } from 'react-rnd';
 import { Input } from 'antd';
+import SecondPageWrapper from '../SecondPageWrapper';
 
 type textConfig = {
   text: string;
@@ -17,7 +17,6 @@ type textConfig = {
 };
 
 const WatermakerImage = ({}) => {
-  const history = useHistory();
   const {
     state: { imgIndex },
   } = useLocation<{ imgIndex: number }>();
@@ -71,12 +70,7 @@ const WatermakerImage = ({}) => {
   };
 
   return (
-    <div className={style.container}>
-      <Button onClick={() => history.go(-1)} type="link">
-        <LeftOutlined />
-        返回
-      </Button>
-      <Divider style={{ margin: '5px 0 20px' }} />
+    <SecondPageWrapper>
       <div className={style.main}>
         <div className={style['img-container']} style={{ height: '250px' }}>
           <img style={{ height: '100%' }} src={imgList[imgIndex].url} alt="没有图片" />
@@ -124,7 +118,7 @@ const WatermakerImage = ({}) => {
           </Col>
         </Row>
       </div>
-    </div>
+    </SecondPageWrapper>
   );
 };
 export default WatermakerImage;

@@ -1,5 +1,5 @@
-import { Button, Divider, Row, Col, Space } from 'antd';
-import { useHistory, useLocation } from 'react-router';
+import { Button, Row, Col, Space } from 'antd';
+import { useLocation } from 'react-router';
 import { DownOutlined, LeftOutlined, RightOutlined, UpOutlined } from '@ant-design/icons';
 import { imgList } from '@/utils/varlable';
 import style from './CropImage.less';
@@ -7,9 +7,9 @@ import { useEffect, useState, useRef } from 'react';
 import _ from 'lodash';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
+import SecondPageWrapper from '../SecondPageWrapper';
 
 const CropImage = ({}) => {
-  const history = useHistory();
   const cropRef = useRef<any>(null);
   const cropImageRef = useRef<HTMLImageElement>(null);
   const [cropImage, setCropImage] = useState<any>('');
@@ -55,12 +55,7 @@ const CropImage = ({}) => {
   }, []);
 
   return (
-    <div className={style.container}>
-      <Button onClick={() => history.go(-1)} type="link">
-        <LeftOutlined />
-        返回
-      </Button>
-      <Divider style={{ margin: '5px 0 20px' }} />
+    <SecondPageWrapper>
       <div className={style.main}>
         <div className={style['img-container']}>
           <img src={imgList[imgIndex].url} alt="没有图片" ref={cropImageRef} />
@@ -135,7 +130,7 @@ const CropImage = ({}) => {
           </Col>
         </Row>
       </div>
-    </div>
+    </SecondPageWrapper>
   );
 };
 export default CropImage;
