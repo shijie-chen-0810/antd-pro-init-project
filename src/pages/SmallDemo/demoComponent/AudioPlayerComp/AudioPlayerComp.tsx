@@ -2,7 +2,7 @@ import useSound from '@/hooks/useSound';
 import { Button, Slider } from 'antd';
 
 const audioUrl =
-  'https://notice-log-test.oss-cn-hangzhou.aliyuncs.com/hotline/20230526/30051767374_30051767375.wav';
+  'https://notice-log-test.oss-cn-hangzhou.aliyuncs.com/hotline/20230601/30053090254_30053090255.wav';
 const AudioPlayerComp = () => {
   const { play, pause, isPlaying, duration, progress, changeProgress } = useSound(audioUrl);
   return (

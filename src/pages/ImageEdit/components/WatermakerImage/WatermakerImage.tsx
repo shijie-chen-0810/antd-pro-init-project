@@ -36,14 +36,20 @@ const WatermakerImage = ({}) => {
       const ctx = canvas.getContext('2d');
       ctx?.drawImage(imgEle, 0, 0, canvas.width, canvas.height);
       // @ts-ignore
-      ctx.font = '24px solid';
+      ctx.font = '48px solid';
       // @ts-ignore
       ctx.fillStyle = color || 'rgba(0,0,0,0.2)';
       ctx?.fillText(text, position?.x || 10, position?.y || 10);
+      // @ts-ignore
+      ctx.font = '48px solid';
+      // @ts-ignore
+      ctx.fillStyle = 'yellow' || 'rgba(0,0,0,0.2)';
+      ctx?.fillText(text, 100, 120);
       const dataURL = canvas.toDataURL();
       return dataURL;
     };
     const image = new Image();
+    image.crossOrigin = 'anonymous';
     image.src = imgUrl;
     return new Promise<string>((resolve) => {
       image.onload = () => {
@@ -56,7 +62,10 @@ const WatermakerImage = ({}) => {
     const base64 = await combineImage(imgList[imgIndex].url, {
       text: waterText,
       color: 'rgba(0,0,0,0.6)',
-      position: waterPosition,
+      position: {
+        x: waterPosition.x,
+        y: waterPosition.y + 24,
+      },
     });
     setPreImage(base64);
   };
