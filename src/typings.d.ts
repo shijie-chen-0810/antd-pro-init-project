@@ -34,3 +34,6 @@ interface Window {
   HotlineClientUi: any;
   renderHotlineClientUI: any;
 }
+interface CanvasRenderingContext2D {
+  wrapText: any;
+}
