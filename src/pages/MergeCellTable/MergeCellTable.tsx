@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GanttChart from '@/components/GanttChart';
 import WeekCalendar from '@/components/WeekCalendar';
+import DataBoard from './components/DataBoard';
+import type { Moment } from 'moment';
+import moment from 'moment';
 
 const MergeCellTable: React.FC = () => {
+  const [curDate, setCurDate] = useState<Moment>(moment());
   const data = [
     {
       firstColumn: '1月1日',
@@ -49,10 +53,12 @@ const MergeCellTable: React.FC = () => {
     <>
       <GanttChart data={data} title="布属日期/时间" />
       <WeekCalendar
+        lastDay={moment()}
         onChange={(date) => {
-          console.log(date.format('YYYY-MM-DD'), 'date');
+          setCurDate(date);
         }}
       />
+      <DataBoard date={curDate} />
     </>
   );
 };

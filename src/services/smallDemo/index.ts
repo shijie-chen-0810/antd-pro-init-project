@@ -52,3 +52,11 @@ export async function formatResultService(params: { code: string }) {
     params,
   });
 }
+
+export async function getDataBoardData(params: any) {
+  // TODO 返回类型设置
+  return request<API.BasePageRes<any>>('/getDataBoardData', {
+    method: 'GET',
+    params,
+  });
+}

@@ -15,22 +15,25 @@ const weekToChinese = {
   7: '日',
 };
 
-const getWeeks: (pre: number) => Moment[] = (pre = 0) => {
-  return Array.from({ length: 7 }, (_, index) =>
-    moment().subtract(pre * 7 + index, 'days'),
-  ).reverse();
+const getPreWeeks: (pre: number, lastDay: Moment) => Moment[] = (pre = 0, lastDay) => {
+  return Array.from({ length: 7 }, (_, index) => {
+    // 需要复制一份不然subtract会修改原数据
+    const date = moment(lastDay);
+    return date.subtract(pre * 7 + index, 'days');
+  }).reverse();
 };
 
 type Props = {
+  lastDay: Moment;
   onChange?: (date: Moment) => void;
 };
 
-const WeekCalendar: React.FC<Props> = ({ onChange }) => {
+const WeekCalendar: React.FC<Props> = ({ lastDay, onChange }) => {
   const [preWeekNum, setPreWeekNum] = useState<number>(0);
-  const [selectDate, setSelectDate] = useState<Moment>(moment());
-  const curWeeks = getWeeks(preWeekNum);
-  const disableNextBtn = curWeeks.at(-1)?.isSame(moment(), 'day');
-  const hideNowBtn = curWeeks.find((item) => item.isSame(moment(), 'day'));
+  const [selectDate, setSelectDate] = useState<Moment>(lastDay);
+  const curWeeks = getPreWeeks(preWeekNum, lastDay);
+  const disableNextBtn = curWeeks.at(-1)?.isSame(lastDay, 'day');
+  const hideNowBtn = curWeeks.find((item) => item.isSame(lastDay, 'day'));
   const handleMonthChange = (type: 'pre' | 'next') => {
     if (type === 'pre') {
       setPreWeekNum(preWeekNum + 4);
@@ -45,7 +48,7 @@ const WeekCalendar: React.FC<Props> = ({ onChange }) => {
     onChange?.(date);
   };
   const comeToToday = () => {
-    handleSelectChange(moment());
+    handleSelectChange(lastDay);
     setPreWeekNum(0);
   };
   return (
@@ -84,7 +87,7 @@ const WeekCalendar: React.FC<Props> = ({ onChange }) => {
                 })}
                 style={{ color: curWeeks.at(3)?.month() === item.month() ? '' : '#d1d1d1' }}
               >
-                {moment().isSame(item, 'day') ? '今' : item.format('D')}
+                {lastDay.isSame(item, 'day') ? '今' : item.format('D')}
               </div>
             </div>
           ))}

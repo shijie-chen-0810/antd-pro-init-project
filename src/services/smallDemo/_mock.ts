@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-// import Mock from 'mockjs';
+import Mock from 'mockjs';
 
 const getRandomNum = (max: number = 1000) => {
   return Math.floor(Math.random() * max);
@@ -126,6 +126,29 @@ export default {
         info: {
           status: true,
         },
+      },
+    });
+  },
+  'GET /api/getDataBoardData': async (req: Request, res: Response) => {
+    await waitTime(100);
+    const data = Mock.mock({
+      [`list|${req.query.pageSize}`]: [
+        {
+          corpNo: '@word(3,8)',
+          'id|1-100000': 1,
+          firstKpTime: '@datetime',
+          customerName: '@cword(3,8)有限公司',
+        },
+      ],
+    });
+    res.send({
+      code: 200,
+      message: '获取客户列表成功',
+      result: {
+        pageSize: req.query.pageSize,
+        pageNo: Number(req.query.pageNo),
+        totals: 72,
+        ...data,
       },
     });
   },
