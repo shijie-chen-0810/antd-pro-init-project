@@ -51,7 +51,7 @@ const MergeCellTable: React.FC = () => {
   ];
   return (
     <>
-      <GanttChart data={data} title="布属日期/时间1" />
+      <GanttChart data={data} title="布属日期/时间" />
       <WeekCalendar
         lastDay={moment()}
         onChange={(date) => {
