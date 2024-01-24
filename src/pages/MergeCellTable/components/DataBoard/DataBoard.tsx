@@ -53,7 +53,7 @@ const DataBoard: React.FC<Props> = ({ date }) => {
       ),
     },
     {
-      title: '14:00',
+      title: '14:001',
       dataIndex: 'customerName',
     },
   ];
