@@ -5,7 +5,7 @@ import moment from 'moment';
 import cs from 'classnames';
 import React, { useState } from 'react';
 
-const weekToChinese = {
+const weekToChinese: Record<number, string> = {
   1: '一',
   2: '二',
   3: '三',
