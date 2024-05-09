@@ -28,13 +28,13 @@ const TrackerClick: React.FC<TrackerClickProps> = (props) => {
   // 埋点逻辑函数
   const trackerHandle: TrackerFCObject = {
     [TRACKERCLICK]: (data) => {
-      console.log(data, 'trackerClick');
+      console.log(data, '埋点逻辑:trackerClick');
     },
     [TRACKERCLICK1]: (data) => {
-      console.log(data, 'trackerClick1');
+      console.log(data, '埋点逻辑:trackerClick1');
     },
     [TRACKERDOUBLECLICK1]: (data) => {
-      console.log(data, 'trackerDoubleClick');
+      console.log(data, '埋点逻辑:trackerDoubleClick');
     },
   };
   /**
@@ -48,7 +48,7 @@ const TrackerClick: React.FC<TrackerClickProps> = (props) => {
     return React.Children.map(children, (child: ReactElement) => {
       const isValid = isValidElement(child);
       if (isValid) {
-        const trackedObject = {};
+        const trackedObject: Record<string, any> = {};
         needAddTracker.forEach((oneTracker) => {
           trackedObject[oneTracker.reactEvent] = (e: any) => {
             // 获取子节点的原本绑定的react事件并且执行
