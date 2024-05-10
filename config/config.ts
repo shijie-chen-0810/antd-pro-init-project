@@ -65,33 +65,5 @@ export default defineConfig({
   },
   plugins: ['lodash-webpack-plugin'],
   extraBabelPlugins: ['lodash'],
-
-  // externals: {
-  //   HotlineClient: 'HotlineClientUi',
-  //   react: 'React',
-  //   'react-dom': 'ReactDOM',
-  // },
-  // styles: [
-  //   'https://g.alicdn.com/xixi-design/xixi-design/2.7.0/index.css',
-  //   'https://g.alicdn.com/code/lib/antd/4.23.0/antd.min.css',
-  // ],
-  // headScripts: [
-  //   'https://g.alicdn.com/code/lib/react/17.0.2/umd/react.development.min.js',
-  //   'https://g.alicdn.com/code/lib/react-dom/17.0.2/umd/react-dom.development.min.js',
-  //   'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js',
-  //   'https://g.alicdn.com/code/lib/antd/4.23.0/antd.min.js',
-  // ],
-  // scripts: [
-  //   'https://g.alicdn.com/antelope/phone-sdk/1.1.0/phone-ui.js',
-  //   // 'http://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.5/hotline-client-ui/index.js',
-  //   // 'https://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.5/hotline-client-fuyun/index.js',
-  //   // 'http://g.alicdn.com/hotline-client/hotline-client-sdk/1.0.5/hotline-client-check-tools/index.js',
-  // ],
+  stillness: {},
 });
-
-// <link rel="stylesheet" href="https://g.alicdn.com/code/lib/antd/4.17.3/antd.min.css" />
-//   <link rel="stylesheet" href="https://g.alicdn.com/xixi-design/xixi-design/2.7.0/index.css" />
-//   <script src="https://g.alicdn.com/code/lib/react/17.0.1/umd/react.production.min.js"></script>
-//   <script src="https://g.alicdn.com/code/lib/react-dom/17.0.1/umd/react-dom.production.min.js"></script>
-//   <script src="https://g.alicdn.com/code/lib/antd/4.17.3/antd.min.js"></script>
-//   <script src="https://g.alicdn.com/antelope/phone-sdk/1.0.0/phone-ui.js"></script>

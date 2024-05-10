@@ -36,4 +36,4 @@ export default {
       pathRewrite: { '^': '' },
     },
   },
-};
+} as Record<string, any>;

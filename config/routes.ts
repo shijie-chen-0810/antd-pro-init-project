@@ -17,6 +17,7 @@
     name: '表格页',
     path: '/table',
     component: './TableList',
+    stillness: true,
   },
   {
     name: '图片编辑器',
