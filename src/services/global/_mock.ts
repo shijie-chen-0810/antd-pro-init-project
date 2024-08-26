@@ -35,7 +35,7 @@ export default {
       });
     }
   },
-  'POST /interface/system/file/uploadPic': async (req: Request, res: Response) => {
+  'POST /api/system/file/uploadPic': async (req: Request, res: Response) => {
     await waitTime(1000);
     res.send({
       code: 200,

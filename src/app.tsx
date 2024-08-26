@@ -13,16 +13,16 @@ import routes from '../config/routes';
 
 const loginPath = '/login';
 
-document.onselectstart = (e) => {
-  // @ts-ignore
-  const quillEle = e.path?.find((item: Element) => {
-    return item.id === 'quill';
-  });
-  if (!quillEle) {
-    return false;
-  }
-  return true;
-};
+// document.onselectstart = (e) => {
+//   // @ts-ignore
+//   const quillEle = e.path?.find((item: Element) => {
+//     return item.id === 'quill';
+//   });
+//   if (!quillEle) {
+//     return false;
+//   }
+//   return true;
+// };
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
