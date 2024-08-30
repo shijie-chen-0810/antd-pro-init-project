@@ -7,12 +7,19 @@ import img5 from '@/assets/imgs/战报.png';
 export const imgList = [
   {
     id: 1,
-    url: 'https://notice-log-test.oss-cn-hangzhou.aliyuncs.com/pangu/battle-dev/image/ding76745342e411bc8dbc961a6cb783455b/202108/16288272973111628827297069.jpeg',
+    url: 'https://pangu-rest.oss-cn-hangzhou.aliyuncs.com/battles/xfw/20240116/1705387726313.jpg',
   },
   { id: 2, url: img2 },
   { id: 3, url: img3 },
   { id: 4, url: img4 },
-  { id: 5, url: img5 },
+  {
+    id: 5,
+    url: img5,
+  },
+  {
+    id: 6,
+    url: 'https://notice-log-test.oss-cn-hangzhou.aliyuncs.com/battle/battle-dev/image/ding76745342e411bc8dbc961a6cb783455b/202104/1619338053946temp.png',
+  },
 ];
 /** 质检列表tab key */
 export const INSPECT_TAB_KEY = {

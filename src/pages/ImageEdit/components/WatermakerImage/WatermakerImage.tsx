@@ -32,6 +32,7 @@ const WatermakerImage = ({}) => {
       const canvas = document.createElement('canvas');
       canvas.width = imgEle.width;
       canvas.height = imgEle.height;
+      console.dir(imgEle, 'imgEle');
       const ctx = canvas.getContext('2d');
       ctx?.drawImage(imgEle, 0, 0, canvas.width, canvas.height);
       // @ts-ignore
@@ -39,11 +40,6 @@ const WatermakerImage = ({}) => {
       // @ts-ignore
       ctx.fillStyle = color || 'rgba(0,0,0,0.2)';
       ctx?.fillText(text, position?.x || 10, position?.y || 10);
-      // @ts-ignore
-      ctx.font = '48px solid';
-      // @ts-ignore
-      ctx.fillStyle = 'yellow' || 'rgba(0,0,0,0.2)';
-      ctx?.fillText(text, 100, 120);
       const dataURL = canvas.toDataURL();
       return dataURL;
     };
@@ -63,7 +59,7 @@ const WatermakerImage = ({}) => {
       color: 'rgba(0,0,0,0.6)',
       position: {
         x: waterPosition.x,
-        y: waterPosition.y + 24,
+        y: waterPosition.y,
       },
     });
     setPreImage(base64);
@@ -72,12 +68,21 @@ const WatermakerImage = ({}) => {
   return (
     <SecondPageWrapper>
       <div className={style.main}>
-        <div className={style['img-container']} style={{ height: '250px' }}>
-          <img style={{ height: '100%' }} src={imgList[imgIndex].url} alt="没有图片" />
+        <div className={style['img-container']}>
+          <img
+            style={{ width: '669px', height: '434px' }}
+            src={imgList[imgIndex].url}
+            alt="没有图片"
+          />
           <Rnd
             bounds="parent"
             enableResizing={{
               right: true,
+              bottom: true,
+              bottomRight: true,
+            }}
+            onResize={(...arg) => {
+              console.log(arg, 'arg');
             }}
             className={style['water-text']}
             minWidth={20}
@@ -110,8 +115,8 @@ const WatermakerImage = ({}) => {
           </Space>
         </div>
         <Row>
-          <Col span={12} style={{ height: '250px' }}>
-            <img style={{ height: '100%' }} src={preImage} />
+          <Col span={12}>
+            <img src={preImage} />
           </Col>
           <Col span={11} offset={2}>
             {/* <img style={{ height: '200px', width: '100%' }} src={preImage} /> */}

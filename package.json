@@ -63,6 +63,7 @@
     "bizcharts": "^4.1.14",
     "classnames": "^2.2.6",
     "cropperjs": "^1.5.12",
+    "html2canvas": "^1.4.1",
     "konva": "^8.3.10",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",
@@ -127,9 +128,6 @@
   },
   "engines": {
     "node": ">=10.0.0"
-  },
-  "gitHooks": {
-    "commit-msg": "fabric verify-commit"
   },
   "peerDependencies": {
     "@wangeditor/core": "^0.12.7"

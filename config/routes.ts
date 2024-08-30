@@ -41,6 +41,11 @@
     component: './ImageEdit/components/MakeWarReport',
   },
   {
+    path: '/imageEdit/makeWarReportTwo',
+    component: './ImageEdit/components/MakeWarReportTwo',
+  },
+
+  {
     name: '案例库',
     path: '/smallDemo',
     component: './SmallDemo',
