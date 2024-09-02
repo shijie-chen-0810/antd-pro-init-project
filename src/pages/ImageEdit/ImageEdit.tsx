@@ -80,6 +80,17 @@ const ImageCrop: React.FC = () => {
         >
           做战报2.0
         </Button>
+        <Button
+          type="primary"
+          onClick={() =>
+            history.push({
+              pathname: '/imageEdit/dragDropWarReport',
+              state: { imgIndex: cropImage },
+            })
+          }
+        >
+          拖拽战报
+        </Button>
       </Space>
     </>
   );

@@ -44,7 +44,11 @@
     path: '/imageEdit/makeWarReportTwo',
     component: './ImageEdit/components/MakeWarReportTwo',
   },
-
+  {
+    path: '/imageEdit/dragDropWarReport',
+    component: './ImageEdit/components/DragDropWarReport',
+    layout: false,
+  },
   {
     name: '案例库',
     path: '/smallDemo',

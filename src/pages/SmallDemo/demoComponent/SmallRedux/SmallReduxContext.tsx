@@ -18,7 +18,7 @@ function useDispatchStore() {
   return useContext(DispatchContext);
 }
 
-const StoreProvider: React.FC = ({ children }) => {
+const StoreProvider: React.FC<React.PropsWithChildren<any>> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, {});
 
   return (

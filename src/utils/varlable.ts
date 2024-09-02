@@ -14,11 +14,11 @@ export const imgList = [
   { id: 4, url: img4 },
   {
     id: 5,
-    url: img5,
+    url: 'https://notice-log-test.oss-cn-hangzhou.aliyuncs.com/battle/battle-dev/image/ding76745342e411bc8dbc961a6cb783455b/202104/1619338053946temp.png',
   },
   {
     id: 6,
-    url: 'https://notice-log-test.oss-cn-hangzhou.aliyuncs.com/battle/battle-dev/image/ding76745342e411bc8dbc961a6cb783455b/202104/1619338053946temp.png',
+    url: 'https://notice-log-test.oss-cn-hangzhou.aliyuncs.com/battle/battle-dev/image/ding76745342e411bc8dbc961a6cb783455b/202104/1619408333504%E5%9B%BE%E6%80%AA%E5%85%BD_%E6%88%98%E6%8A%A57.jpg',
   },
 ];
 /** 质检列表tab key */
