@@ -4,10 +4,19 @@ import { Button, Divider } from 'antd';
 import type { PropsWithChildren } from 'react';
 import React from 'react';
 
-const SecondPageWrapper: React.FC<PropsWithChildren<any>> = ({ children }) => {
+const SecondPageWrapper: React.FC<PropsWithChildren<{ beforeGoBack?: () => void }>> = ({
+  children,
+  beforeGoBack,
+}) => {
   return (
     <div className={style.container}>
-      <Button onClick={() => history.go(-1)} type="link">
+      <Button
+        onClick={() => {
+          beforeGoBack?.();
+          history.go(-1);
+        }}
+        type="link"
+      >
         <LeftOutlined />
         返回
       </Button>

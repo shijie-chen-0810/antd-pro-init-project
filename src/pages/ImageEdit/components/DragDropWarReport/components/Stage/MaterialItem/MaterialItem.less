@@ -1,33 +1,31 @@
-
 .material-item {
+  position: absolute;
+  top: 0;
+  left: 0;
   text-wrap: nowrap;
-
-  .input-style{
-    display: inline-block;
-    background-color: transparent;
-    border: none;
-    vertical-align: top;
-    padding: 0;
+  cursor: move;
+  > * {
+    display: block;
   }
-  .delete-btn{
-    display: none;
+  .delete-btn {
     position: absolute;
-    right: 5px;
     top: 5px;
+    right: 5px;
+    display: none;
     width: 12px;
     height: 12px;
-    cursor: pointer;
-    color:white;
+    color: white;
     font-size: 12px;
     line-height: 12px;
     text-align: center;
     background-color: gray;
     outline: 1px dashed gray;
+    cursor: pointer;
   }
 }
-.material-item:hover{
+.material-item:hover {
   outline: 1px dashed gray;
-  .delete-btn{
+  .delete-btn {
     display: block;
   }
 }

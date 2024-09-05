@@ -1,44 +1,47 @@
 .stage {
+  display: flex;
   flex: 1;
+  align-items: center;
+  justify-content: center;
   border-right: 1px solid #e0e0e0;
   border-left: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
-.content{
+.content {
   position: relative;
+  width: 250px;
+  height: 450px;
   overflow: hidden;
+  border: 1px solid #e0e0e0;
 }
 .water-text {
   text-wrap: nowrap;
 
-  .input-style{
+  .input-style {
     display: inline-block;
+    padding: 0;
+    vertical-align: top;
     background-color: transparent;
     border: none;
-    vertical-align: top;
-    padding: 0;
   }
-  .delete-btn{
-    display: none;
+  .delete-btn {
     position: absolute;
-    right: 5px;
     top: 5px;
+    right: 5px;
+    display: none;
     width: 12px;
     height: 12px;
-    cursor: pointer;
-    color:white;
+    color: white;
     font-size: 12px;
     line-height: 12px;
     text-align: center;
     background-color: gray;
     outline: 1px dashed gray;
+    cursor: pointer;
   }
 }
-.water-text:hover{
+.water-text:hover {
   outline: 1px dashed gray;
-  .delete-btn{
+  .delete-btn {
     display: block;
   }
 }

@@ -1,8 +1,10 @@
-import { RootModelState } from '@/models/typing';
-import { MaterialInfo, WarReportReducers } from '@/models/warReport';
+import type { RootModelState } from '@/models/typing';
+import { WarReportReducers } from '@/models/warReport';
+import type { MaterialInfo } from '@/models/warReport';
 import style from './MaterialItem.less';
-import { ConnectProps, Dispatch, connect } from 'umi';
-import { CSSProperties } from 'react';
+import { connect } from 'umi';
+import type { ConnectProps, Dispatch } from 'umi';
+import type { CSSProperties } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Rnd } from 'react-rnd';
 import { throttle } from 'lodash';
@@ -17,17 +19,15 @@ const MaterialItem: React.FC<Props> = ({ warReport, dispatch, materialItemInfo }
   const { selectId } = warReport;
   const { id, blockType, width, height, text, src, position, textStyle } = materialItemInfo;
   const { x = 0, y = 0 } = position;
-  const { color, fontSize } = textStyle || {};
-  let blockStyle: CSSProperties = { outline: selectId === id ? '1px solid orange' : '' };
-  if (blockType === 'text') {
-    blockStyle = {
-      ...blockStyle,
-    };
-  }
-  const changeBlockItemInfo = (id: string, changeInfo: Partial<MaterialInfo>) => {
+  const { color, fontSize, textAlign, fontWeight, fontStyle } = textStyle || {};
+  const blockStyle: CSSProperties = {
+    outline: selectId === id ? '1px solid orange' : '',
+  };
+
+  const changeBlockItemInfo = (blockId: string, changeInfo: Partial<MaterialInfo>) => {
     dispatch({
       type: WarReportReducers.changeBlock,
-      payload: { id, changeInfo },
+      payload: { id: blockId, changeInfo },
     });
   };
 
@@ -40,16 +40,23 @@ const MaterialItem: React.FC<Props> = ({ warReport, dispatch, materialItemInfo }
   return (
     <Rnd
       key={id}
+      bounds="parent"
       enableResizing={{ bottom: true, right: true, bottomRight: true }}
       onResize={throttle((e, a, ele) => {
-        const { clientWidth: width, clientHeight: height } = ele;
-        changeBlockItemInfo(id, { width, height, textStyle: { fontSize: height } });
-      }, 100)}
+        const { clientWidth, clientHeight } = ele;
+        changeBlockItemInfo(id, {
+          width: clientWidth,
+          height: clientHeight,
+          textStyle: { fontSize: clientHeight, lineHeight: clientHeight },
+        });
+      }, 500)}
       className={style['material-item']}
       default={{ x, y, width, height }}
+      size={{ width, height }}
       style={{ ...blockStyle }}
-      onDragStop={(e, { x, y }) => changeBlockItemInfo(id, { position: { x, y } })}
-      onClick={() => {
+      onDragStop={(e, { x, y }) => changeBlockItemInfo(id, { position: { x: X, y: Y } })}
+      onClick={(e: any) => {
+        e.stopPropagation();
         dispatch({
           type: WarReportReducers.changeSelectId,
           payload: id,
@@ -60,7 +67,16 @@ const MaterialItem: React.FC<Props> = ({ warReport, dispatch, materialItemInfo }
         switch (blockType) {
           case 'text':
             return (
-              <span style={{ color, fontSize: `${fontSize}px`, lineHeight: `${fontSize}px` }}>
+              <span
+                style={{
+                  color,
+                  fontSize: `${fontSize}px`,
+                  lineHeight: `${fontSize}px`,
+                  textAlign,
+                  fontWeight,
+                  fontStyle,
+                }}
+              >
                 {text}
               </span>
             );

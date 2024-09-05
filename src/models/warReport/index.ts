@@ -38,6 +38,7 @@ export default {
           return block;
         }
       });
+      console.log(changeInfo, 'changeInfo', newBlockInfo, 'newBlockInfo');
       return { ...state, blockList: newBlockInfo };
     },
     deleteBlock: (state: WarReportState, action: ReducerAction<{ id: string }>) => {
@@ -50,6 +51,12 @@ export default {
       const selectId = action.payload;
       return { ...state, selectId };
     },
+    clearBlockList: () => {
+      return {
+        blockList: [],
+        selectId: '',
+      };
+    },
   },
 };
 export const WarReportReducers = {
@@ -57,19 +64,8 @@ export const WarReportReducers = {
   changeBlock: 'warReport/changeBlock',
   deleteBlock: 'warReport/deleteBlock',
   changeSelectId: 'warReport/changeSelectId',
+  clearBlockList: 'warReport/clearBlockList',
 };
-
-// export type MaterialInfo = {
-//   id: string;
-//   blockType: 'text' | 'img';
-//   width: number;
-//   height: number;
-//   position: { x: number; y: number };
-//   text?: string;
-//   fontSize?: number;
-//   src?: string;
-//   color?: string;
-// };
 
 export type WarReportState = {
   blockList: MaterialInfo[];
@@ -91,9 +87,10 @@ type TextMaterial = {
   textStyle?: {
     color?: string;
     fontSize?: number;
+    lineHeight?: number;
     fontStyle?: 'italic' | 'normal' | 'oblique';
-    fontWeight?: 'normal' | 'blod';
-    textAligin?: 'left' | 'center' | 'right';
+    fontWeight?: 'normal' | 'bolder';
+    textAlign?: 'left' | 'center' | 'right';
   };
 };
 type ImageMaterial = {

@@ -1,10 +1,11 @@
-import { ConnectProps, Dispatch, connect, useLocation } from 'umi';
-import { MaterialInfo, WarReportReducers } from '@/models/warReport';
+import { connect } from 'umi';
+import type { ConnectProps, Dispatch } from 'umi';
+import type { MaterialInfo } from '@/models/warReport';
+import { WarReportReducers } from '@/models/warReport';
 import style from './Stage.less';
-import { imgList } from '@/utils/varlable';
 import { useDrop } from 'react-dnd';
 import { DrapAndDropType } from '../..';
-import { RootModelState } from '@/models/typing';
+import type { RootModelState } from '@/models/typing';
 import MaterialItem from './MaterialItem';
 
 interface IPosition {
@@ -47,11 +48,7 @@ interface Props extends ConnectProps {
 }
 
 const Stage: React.FC<Props> = ({ warReport, dispatch }) => {
-  const { blockList, selectId } = warReport;
-  const {
-    state: { imgIndex },
-  } = useLocation<{ imgIndex: number }>();
-  const imgUrl = imgList[imgIndex].url;
+  const { blockList } = warReport;
   const [, dropRef] = useDrop({
     accept: DrapAndDropType,
     drop: (payload: MaterialInfo, monitor) => {
@@ -67,19 +64,16 @@ const Stage: React.FC<Props> = ({ warReport, dispatch }) => {
     },
   });
   return (
-    <div className={style.stage}>
+    <div
+      className={style.stage}
+      onClick={() =>
+        dispatch({
+          type: WarReportReducers.changeSelectId,
+          payload: '',
+        })
+      }
+    >
       <div className={style.content} ref={dropRef} id="drop-container">
-        <img
-          src={imgUrl}
-          width={'250px'}
-          draggable={false}
-          onClick={() =>
-            dispatch({
-              type: WarReportReducers.changeSelectId,
-              payload: '',
-            })
-          }
-        />
         {blockList?.map((material) => {
           return <MaterialItem key={material.id} materialItemInfo={material} />;
         })}

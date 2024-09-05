@@ -1,4 +1,4 @@
-import { MaterialInfo } from '@/models/warReport';
+import type { MaterialInfo } from '@/models/warReport';
 import occupationImg from '@/assets/imgs/occupation.png';
 
 export const defaultMaterialList: MaterialInfo[] = [
@@ -13,6 +13,7 @@ export const defaultMaterialList: MaterialInfo[] = [
       fontSize: 24,
       fontStyle: 'normal',
       fontWeight: 'normal',
+      textAlign: 'center',
     },
     materialConfig: {
       isForm: false,
