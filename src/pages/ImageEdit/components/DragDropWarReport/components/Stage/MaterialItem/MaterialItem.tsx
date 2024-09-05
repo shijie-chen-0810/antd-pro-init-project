@@ -24,10 +24,10 @@ const MaterialItem: React.FC<Props> = ({ warReport, dispatch, materialItemInfo }
     outline: selectId === id ? '1px solid orange' : '',
   };
 
-  const changeBlockItemInfo = (blockId: string, changeInfo: Partial<MaterialInfo>) => {
+  const changeBlockItemInfo = (id: string, changeInfo: Partial<MaterialInfo>) => {
     dispatch({
       type: WarReportReducers.changeBlock,
-      payload: { id: blockId, changeInfo },
+      payload: { id, changeInfo },
     });
   };
 
