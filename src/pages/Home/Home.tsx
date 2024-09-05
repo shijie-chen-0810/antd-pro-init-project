@@ -1,7 +1,6 @@
 import React from 'react';
 import welcome from '@/assets/imgs/welcome.png';
 import style from './Home.less';
-import ProForm from '@ant-design/pro-form';
 
 // const getHotlineClientSDK = window.HotlineClientApi.default;
 // const SDK = getHotlineClientSDK({
@@ -13,7 +12,6 @@ import ProForm from '@ant-design/pro-form';
 const Welcome: React.FC = () => {
   return (
     <div className={style.container}>
-      <ProForm />
       <img src={welcome} alt="" />
       <div className={style.right}>
         <span className={style.title}>欢迎</span>
