@@ -54,7 +54,7 @@ const MaterialItem: React.FC<Props> = ({ warReport, dispatch, materialItemInfo }
       default={{ x, y, width, height }}
       size={{ width, height }}
       style={{ ...blockStyle }}
-      onDragStop={(e, { x, y }) => changeBlockItemInfo(id, { position: { x: X, y: Y } })}
+      onDragStop={(e, { x, y }) => changeBlockItemInfo(id, { position: { x, y } })}
       onClick={(e: any) => {
         e.stopPropagation();
         dispatch({
