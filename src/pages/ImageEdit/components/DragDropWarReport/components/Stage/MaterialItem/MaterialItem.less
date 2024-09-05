@@ -1,0 +1,33 @@
+
+.material-item {
+  text-wrap: nowrap;
+
+  .input-style{
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    vertical-align: top;
+    padding: 0;
+  }
+  .delete-btn{
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    color:white;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    background-color: gray;
+    outline: 1px dashed gray;
+  }
+}
+.material-item:hover{
+  outline: 1px dashed gray;
+  .delete-btn{
+    display: block;
+  }
+}

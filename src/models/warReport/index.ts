@@ -1,3 +1,4 @@
+import { deepObjectMerge } from '@/utils/utils';
 import { cloneDeep } from 'lodash';
 
 type ReducerAction<P> = {
@@ -29,10 +30,7 @@ export default {
       const changeInfo = action.payload.changeInfo;
       const id = action.payload.id;
       let targetBlock = cloneDeep(blockList?.find((block) => block.id === id));
-      targetBlock = {
-        ...targetBlock,
-        ...changeInfo,
-      } as MaterialInfo;
+      targetBlock = deepObjectMerge(targetBlock || {}, changeInfo) as MaterialInfo;
       const newBlockInfo = blockList?.map((block) => {
         if (block.id === targetBlock?.id) {
           return targetBlock;
@@ -45,8 +43,8 @@ export default {
     deleteBlock: (state: WarReportState, action: ReducerAction<{ id: string }>) => {
       const { blockList } = state;
       const id = action.payload.id;
-      const newBlockInfo = blockList?.filter((block) => block.id !== id);
-      return { ...state, blockList: newBlockInfo };
+      const newBlockList = blockList?.filter((block) => block.id !== id);
+      return { ...state, blockList: newBlockList };
     },
     changeSelectId: (state: WarReportState, action: ReducerAction<string>) => {
       const selectId = action.payload;
@@ -61,24 +59,24 @@ export const WarReportReducers = {
   changeSelectId: 'warReport/changeSelectId',
 };
 
-export type MaterialInfo = {
-  id: string;
-  blockType: 'text' | 'img';
-  width: number;
-  height: number;
-  position: { x: number; y: number };
-  text?: string;
-  fontSize?: number;
-  src?: string;
-  color?: string;
-};
+// export type MaterialInfo = {
+//   id: string;
+//   blockType: 'text' | 'img';
+//   width: number;
+//   height: number;
+//   position: { x: number; y: number };
+//   text?: string;
+//   fontSize?: number;
+//   src?: string;
+//   color?: string;
+// };
 
 export type WarReportState = {
   blockList: MaterialInfo[];
   selectId: string;
 };
 
-export type MaterialInfo1 = {
+export type MaterialInfo = {
   id: string;
   blockType: 'text' | 'number' | 'img';
   width: number;
@@ -90,7 +88,7 @@ export type MaterialInfo1 = {
 
 type TextMaterial = {
   text?: string;
-  textStyle: {
+  textStyle?: {
     color?: string;
     fontSize?: number;
     fontStyle?: 'italic' | 'normal' | 'oblique';

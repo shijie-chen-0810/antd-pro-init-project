@@ -4,12 +4,8 @@ import style from './Stage.less';
 import { imgList } from '@/utils/varlable';
 import { useDrop } from 'react-dnd';
 import { DrapAndDropType } from '../..';
-import { Rnd } from 'react-rnd';
-import { throttle } from 'lodash';
-import cs from 'classnames';
 import { RootModelState } from '@/models/typing';
-import { CloseOutlined } from '@ant-design/icons';
-import { CSSProperties } from 'react';
+import MaterialItem from './MaterialItem';
 
 interface IPosition {
   x: number;
@@ -52,13 +48,11 @@ interface Props extends ConnectProps {
 
 const Stage: React.FC<Props> = ({ warReport, dispatch }) => {
   const { blockList, selectId } = warReport;
-  console.log(blockList, selectId, 'blockList');
   const {
     state: { imgIndex },
   } = useLocation<{ imgIndex: number }>();
   const imgUrl = imgList[imgIndex].url;
-
-  const [, drop] = useDrop({
+  const [, dropRef] = useDrop({
     accept: DrapAndDropType,
     drop: (payload: MaterialInfo, monitor) => {
       const position = getCorrectDroppedOffsetValue(
@@ -72,21 +66,9 @@ const Stage: React.FC<Props> = ({ warReport, dispatch }) => {
       });
     },
   });
-  const handleDeleteBlock = (id: string) => {
-    dispatch({
-      type: WarReportReducers.deleteBlock,
-      payload: { id },
-    });
-  };
-  const changeBlockItemInfo = (id: string, changeInfo: Partial<MaterialInfo>) => {
-    dispatch({
-      type: WarReportReducers.changeBlock,
-      payload: { id, changeInfo },
-    });
-  };
   return (
     <div className={style.stage}>
-      <div className={style.content} ref={drop} id="drop-container">
+      <div className={style.content} ref={dropRef} id="drop-container">
         <img
           src={imgUrl}
           width={'250px'}
@@ -98,53 +80,8 @@ const Stage: React.FC<Props> = ({ warReport, dispatch }) => {
             })
           }
         />
-        {blockList?.map((block) => {
-          const { id, blockType, width, height, color, text, fontSize, src, position } = block;
-          const { x = 0, y = 0 } = position;
-          let blockStyle: CSSProperties = { outline: selectId === id ? '1px solid orange' : '' };
-          if (blockType === 'text') {
-            blockStyle = {
-              ...blockStyle,
-              color,
-              fontSize: `${fontSize}px`,
-              lineHeight: `${fontSize}px`,
-            };
-          }
-          if (blockType === 'img') {
-            blockStyle = {
-              ...blockStyle,
-              backgroundImage: `url(${src})`,
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-            };
-          }
-          return (
-            <Rnd
-              key={id}
-              enableResizing={{ bottomRight: true }}
-              lockAspectRatio={true}
-              onResize={throttle((e, a, ele) => {
-                const { clientWidth: width, clientHeight: height } = ele;
-                changeBlockItemInfo(id, { width, height, fontSize: height });
-              }, 100)}
-              className={cs(style['water-text'])}
-              default={{ x, y, width, height }}
-              style={{ ...blockStyle }}
-              onDragStop={(e, { x, y }) => changeBlockItemInfo(id, { position: { x, y } })}
-              onClick={() => {
-                dispatch({
-                  type: WarReportReducers.changeSelectId,
-                  payload: id,
-                });
-              }}
-            >
-              {blockType === 'text' ? text : null}
-              <CloseOutlined
-                className={style['delete-btn']}
-                onClick={() => handleDeleteBlock(id)}
-              />
-            </Rnd>
-          );
+        {blockList?.map((material) => {
+          return <MaterialItem key={material.id} materialItemInfo={material} />;
         })}
       </div>
     </div>

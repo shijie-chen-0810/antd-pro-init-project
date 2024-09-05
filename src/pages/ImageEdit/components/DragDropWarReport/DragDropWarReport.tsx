@@ -13,7 +13,6 @@ interface Props extends ConnectProps {
 }
 
 const DragDropWarReport: React.FC<Props> = ({ warReport }) => {
-  console.log(warReport);
   return (
     <SecondPageWrapper>
       <DndProvider backend={HTML5Backend}>

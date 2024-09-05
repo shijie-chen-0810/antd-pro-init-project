@@ -194,3 +194,14 @@ export const randomString = (length: number) => {
   }
   return pwd;
 };
+
+export const deepObjectMerge = (FirstOBJ: Record<string, any>, SecondOBJ: Record<string, any>) => {
+  // 深度合并对象
+  for (const key in SecondOBJ) {
+    FirstOBJ[key] =
+      FirstOBJ[key] && FirstOBJ[key].toString() === '[object Object]'
+        ? deepObjectMerge(FirstOBJ[key], SecondOBJ[key])
+        : (FirstOBJ[key] = SecondOBJ[key]);
+  }
+  return FirstOBJ;
+};
