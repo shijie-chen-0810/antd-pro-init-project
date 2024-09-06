@@ -1,0 +1,76 @@
+.SlidingBar {
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 5px 10px;
+  position: absolute;
+  bottom: 12%;
+  left: 20px;
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: 500;
+
+  .SlidingBarMain {
+    padding: 5px 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .small {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid rgba(0, 0, 0, 0.2);
+      border: none;
+      background-color: #fff;
+
+      .icon {
+        margin-top: 15px;
+      }
+
+      p {
+        font-size: 12px;
+      }
+    }
+
+    .progressBar {
+      width: 100px;
+      height: 30px;
+      margin: 15px 15px 0 15px;
+    }
+
+    .big {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-left: 1px solid rgba(0, 0, 0, 0.2);
+      border: none;
+      background-color: #fff;
+
+      .icon {
+        margin-top: 15px;
+      }
+
+      p {
+        font-size: 12px;
+      }
+    }
+
+    .SlidingText {
+      background-color: #fff;
+      width: 60px;
+      height: 50px;
+      border: none;
+      font-size: 12px;
+      font-weight: 600;
+      border-left: 1px solid rgba(0, 0, 0, 0.2);
+      line-height: 23px;
+      text-align: center;
+    }
+  }
+}

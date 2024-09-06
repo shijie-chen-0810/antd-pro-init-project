@@ -1,0 +1,50 @@
+.modalLib {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+  }
+
+  .moduleList {
+    width: 100%;
+    height: 0;
+    flex: auto;
+    padding: 10px;
+
+    .moduleItem {
+      width: 100%;
+      padding: 10px;
+
+      .iconImg {
+        width: 40px;
+        height: 40px;
+      }
+
+      .icon {
+        font-size: 30px;
+        text-align: center;
+      }
+
+      .name {
+        text-align: center;
+        font-size: 16px;
+      }
+
+      &:hover {
+        background-color: rgba(24, 144, 255, 0.06);
+        color: #1890FF;
+        border-radius: 11px;
+      }
+
+
+    }
+  }
+}

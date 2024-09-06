@@ -50,6 +50,11 @@
     layout: false,
   },
   {
+    path: '/imageEdit/editor',
+    component: './Editor/Editor',
+    layout: false,
+  },
+  {
     name: '案例库',
     path: '/smallDemo',
     component: './SmallDemo',
