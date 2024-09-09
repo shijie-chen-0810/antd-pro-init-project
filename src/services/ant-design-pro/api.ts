@@ -38,7 +38,6 @@ export const queryPoster = (params: any) => {
         deptId: string[];
         deptName: string[];
       }[];
-      userLimit: number;
       createUserName: string;
       createTime: string;
       updateTime: string;
@@ -54,10 +53,39 @@ export const queryPosterTemplate = (params: any) => {
       image: string;
       config: string;
       type: string;
-      userLimit: number;
       createUserName: string;
       createTime: string;
       updateTime: string;
     }>
   >('/fighting/mng/poster/template/query', { params });
 };
+
+export async function addMaterial(data: any) {
+  return request<API.Result<number>>('/fighting/mng/material/add', { data, method: 'POST' });
+}
+
+export async function listMaterialTag(params?: any) {
+  return request<
+    API.Result<
+      {
+        groupName: string;
+        id: number;
+        sorted: number;
+      }[]
+    >
+  >('/fighting/mng/material/group', { params });
+}
+
+export async function addMaterialTag(tagName: string) {
+  return request<API.Result<any>>('/fighting/mng/material/group/add', {
+    params: { groupName: tagName },
+  });
+}
+
+export async function listMaterial(params: any) {
+  return request<API.Result<any>>('/fighting/mng/material/list', { params });
+}
+
+export async function getMaterialInfo(path: string) {
+  return request<API.Result<any>>('/fighting/mng/upload/query/path', { params: { path } });
+}

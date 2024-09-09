@@ -4,17 +4,17 @@
  * Copyright © 2022 haiyoucuv. All rights reserved.
  */
 
-import { setAttribute } from "@/pages/Editor/Render/Engine/utils";
-import type { Stage } from "./Stage";
-import type { Group } from "./Group";
+import { setAttribute } from '@/pages/Editor/Render/Engine/utils';
+import type { Stage } from './Stage';
+import type { Group } from './Group';
 
 export abstract class Node<T extends SVGGraphicsElement> {
-
-  onChange = null;
+  onChange: null | (() => void) = null;
+  [key: string]: any;
 
   static ID = 0;
 
-  protected _dom: T = null;
+  protected _dom: T | null = null;
 
   get dom() {
     return this._dom;
@@ -26,23 +26,23 @@ export abstract class Node<T extends SVGGraphicsElement> {
     return this._id;
   }
 
-  protected _type = "Node";
+  protected _type = 'Node';
 
   get type() {
     return this._type;
   }
 
-  protected _parent: Group = null;
+  protected _parent: Group | null = null;
 
   get parent() {
     return this._parent;
   }
 
-  get stage(): Stage {
-    if (this.type === "Stage") {
+  get stage(): Stage | undefined {
+    if (this.type === 'Stage') {
       return this as unknown as Stage;
     } else {
-      return this.parent?.stage
+      return this.parent?.stage;
     }
   }
 
@@ -82,20 +82,18 @@ export abstract class Node<T extends SVGGraphicsElement> {
   }
 
   get bBox(): SVGRect {
-    return this.dom.getBBox();
+    return (this.dom as T).getBBox();
   }
 
   updateTransform = () => {
     const { rotation, x, y, bBox } = this;
-    const rotate = `rotate(${rotation} ${bBox.x},${bBox.y})`;
+    const rotate = `rotate(${rotation} ${bBox?.x},${bBox?.y})`;
     const translate = `translate(${x} ${y})`;
-    setAttribute(
-      this._dom,
-      "transform",
-      [translate, rotate,].join(" ")
-    );
+    if (this._dom) {
+      setAttribute(this._dom, 'transform', [translate, rotate].join(' '));
+    }
     if (this.onChange) this.onChange();
-  }
+  };
 
   toJson(): any {
     const { x, y, rotation, type } = this;
@@ -114,5 +112,4 @@ export abstract class Node<T extends SVGGraphicsElement> {
     this.rotation = rotation;
     return this;
   }
-
 }

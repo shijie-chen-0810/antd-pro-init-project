@@ -1,0 +1,28 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+:global(.listBox .ant-card-body) {
+  padding-bottom: 0 !important;
+}
+
+:global(.material .ant-modal-body) {
+  padding-bottom: 0 !important;
+}
+
+:global(.listBox .item) {
+  & > div:first-child {
+    padding: 0;
+  }
+}
+
+:global(.listBox .itemActive) {
+  border: 1px solid #1890ff;
+}
+
+:global(.listBox::-webkit-scrollbar) {
+  width: 0;
+  height: 0;
+}

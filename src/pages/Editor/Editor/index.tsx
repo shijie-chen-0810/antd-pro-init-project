@@ -16,24 +16,21 @@ import SlidingBar from '@/components/SlidingBar';
 
 const Editor: React.FC = () => {
   const [currentSelect, setCurrentSelect] = useState<Node<any> | undefined>();
-  const [loading, setLoading] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(0.5);
 
   const [meta, setMeta] = useState<PosterMeta>({
     title: '激励海报',
     type: 'team',
-    staffs: [],
     width: 844,
     height: 1500,
     bgSrc: '',
-    userLimit: 3,
   });
 
   const { template } = queryString.parse(location.hash.split('?')[1]);
 
-  const stageRef = useRef<Render>();
+  const stageRef = useRef<Render | null>(null);
 
-  const editorRef = useRef<EditPanelRef>();
+  const editorRef = useRef<EditPanelRef | null>(null);
 
   const handleMetaChange = (key: keyof PosterMeta, value: any) => {
     setMeta({ ...meta, [key]: value });
@@ -53,14 +50,10 @@ const Editor: React.FC = () => {
   const getExtra = () => {
     return [
       <Button
-        loading={loading}
-        disabled={loading}
         key="save"
         type="primary"
         onClick={() => {
-          // setLoading(true);
           console.log(stageRef.current?.toJson());
-          return;
         }}
       >
         <SaveOutlined />
@@ -98,8 +91,7 @@ const Editor: React.FC = () => {
             height={meta.height}
             bgSrc={meta.bgSrc}
             zoom={zoom}
-            userLimit={meta.userLimit}
-            onSelect={setCurrentSelect}
+            onSelect={(node) => node && setCurrentSelect(node)}
             onUpdate={handleStageUpdate}
           />
           <SlidingBar zoom={zoom} setZoom={setZoom} />

@@ -5,7 +5,7 @@
  */
 
 import { DeleteOutlined } from '@ant-design/icons';
-import type { Node } from './Engine';
+import type { Group, Node } from './Engine';
 import { Stage, Text, Image, getClass } from './Engine';
 import { Figure } from './Engine';
 import { covertSVGToImage, getImage } from './renderTools';
@@ -29,8 +29,7 @@ type RenderProps = {
   width: number;
   height: number;
   bgSrc: string;
-  userLimit: number;
-  onSelect: (node: Node<any>) => void;
+  onSelect: (node: Node<any> | null | undefined) => void;
   onUpdate: () => void;
   template: boolean;
   zoom: number;
@@ -46,121 +45,119 @@ const Moveable = makeMoveable<DraggableProps & ResizableProps & ScalableProps & 
 
 const Editable = {
   name: 'editable',
-  props: {},
-  events: {},
+  props: [],
+  events: [],
   render: (moveable: MoveableManagerInterface<any, any>, React: Renderer) => {
     const { pos2 } = moveable.state;
-
-    const EditableViewer = moveable.useCSS(
-      'div',
-      `
-        {
-            position: absolute;
-            left: 5px;
-            top: 0px;
-            will-change: transform;
-            font-size: 10px;
-            transform-origin: 0 0;
-             transform: translate(${pos2[0]}px, ${pos2[1]}px);
-        }
-        .del {
-          position: absolute;
-          left: 0;
-          top: -35px;
-          background: red;
-          border-radius: 4px;
-          appearance: none;
-          border: 0;
-          color: white;
-          font-size: 15px;
-          font-weight: bold;
-        }
-        .moveable-button {
-            width: 65px;
-            margin-top: 5px;
-            background: #4af;
-            border-radius: 4px;
-            appearance: none;
-            border: 0;
-            color: white;
-            font-weight: bold;
-        }
-        `,
-    );
-
+    const { dimensionViewable } = moveable.props;
+    const rect = moveable.getRect();
     return (
-      <EditableViewer key="editable-viewer" className="moveable-editable">
-        <button
-          className="moveable-button"
-          onClick={() => {
-            moveable.props.onMoveUp();
+      <div key="editable-viewer">
+        <div
+          key="editable-viewer"
+          className="moveable-editable"
+          style={{
+            position: 'absolute',
+            left: '5px',
+            top: '0px',
+            willChange: 'transform',
+            fontSize: '10px',
+            transformOrigin: '0 0',
+            transform: `translate(${pos2[0]}px, ${pos2[1]}px)`,
           }}
         >
-          {/* <ArrowUpOutlined /> */}
-          图层上移
-        </button>
-        <button
-          className="moveable-button"
-          onClick={() => {
-            moveable.props.onMoveDown();
-          }}
-        >
-          {/* <ArrowDownOutlined /> */}
-          图层下移
-        </button>
-        <button
-          className="del"
-          onClick={() => {
-            moveable.props.onDeleteNode();
-          }}
-        >
-          <DeleteOutlined />
-        </button>
-      </EditableViewer>
+          <button
+            className="moveable-button"
+            style={{
+              width: '65px',
+              background: '#4af',
+              borderRadius: '4px',
+              appearance: 'none',
+              border: 0,
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+            onClick={() => {
+              moveable.props.onMoveUp();
+            }}
+          >
+            图层上移
+          </button>
+          <button
+            className="moveable-button"
+            style={{
+              width: '65px',
+              marginTop: '5px',
+              background: '#4af',
+              borderRadius: '4px',
+              appearance: 'none',
+              border: 0,
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+            onClick={() => {
+              moveable.props.onMoveDown();
+            }}
+          >
+            图层下移
+          </button>
+          <button
+            className="del"
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: '-35px',
+              background: 'red',
+              borderRadius: '4px',
+              appearance: 'none',
+              border: 0,
+              color: 'white',
+              fontSize: '15px',
+              fontWeight: 'bold',
+            }}
+            onClick={() => {
+              moveable.props.onDeleteNode();
+            }}
+          >
+            <DeleteOutlined />
+          </button>
+        </div>
+        {dimensionViewable ? (
+          <div
+            key="dimension-viewer"
+            className="moveable-dimension"
+            style={{
+              position: 'absolute',
+              left: `${rect.width / 2}px`,
+              top: `${rect.height + 5}px`,
+              background: '#4af',
+              borderRadius: '2px',
+              padding: '2px 4px',
+              color: 'white',
+              fontSize: '10px',
+              whiteSpace: 'nowrap',
+              fontWeight: 'bold',
+              willChange: 'transform',
+              transform: 'translate(-50%, 0px)',
+            }}
+          >
+            双击编辑
+          </div>
+        ) : null}
+      </div>
     );
   },
 };
 
-const DimensionViewable = {
-  name: 'dimensionViewable',
-  props: {},
-  events: {},
-  render(moveable: MoveableManagerInterface<any, any>, React: Renderer) {
-    const rect = moveable.getRect();
-
-    return (
-      <div
-        key="dimension-viewer"
-        className="moveable-dimension"
-        style={{
-          position: 'absolute',
-          left: `${rect.width / 2}px`,
-          top: `${rect.height + 5}px`,
-          background: '#4af',
-          borderRadius: '2px',
-          padding: '2px 4px',
-          color: 'white',
-          fontSize: '10px',
-          whiteSpace: 'nowrap',
-          fontWeight: 'bold',
-          willChange: 'transform',
-          transform: 'translate(-50%, 0px)',
-        }}
-      >
-        双击编辑
-      </div>
-    );
-  },
-} as const;
 // TODO 为什么用class组件？主要是函数式组件生命周期不明确，手动操作dom不方便，我太菜了
 export default class Render extends Component<RenderProps> {
   scale: number = 1;
-  stage: Stage;
-  renderCmp: HTMLDivElement;
-  renderBox: HTMLDivElement;
-  renderStage: HTMLDivElement;
-  selectNode: Node<any> = null;
-  private moveable;
+  stage: Stage | undefined;
+  renderCmp: HTMLDivElement | undefined;
+  renderBox: HTMLDivElement | undefined;
+  renderStage: HTMLDivElement | undefined;
+  selectNode: Node<any> | null | undefined = null;
+  private moveable: any;
 
   state = {
     isText: false,
@@ -168,7 +165,6 @@ export default class Render extends Component<RenderProps> {
     target: null,
     visible: false,
     node: null,
-    userCount: 0,
     frame: {
       translate: [0, 0],
       scale: [1, 1],
@@ -181,14 +177,14 @@ export default class Render extends Component<RenderProps> {
 
     const stage = (this.stage = new Stage(this.props.width, this.props.height));
     this.stage.bgSrc = this.props.bgSrc;
-    this.renderStage.appendChild(stage.dom);
+    stage.dom && this.renderStage?.appendChild(stage.dom);
     // if (this.props.template) {
     //   const text = new Text('由蒲公英提供技术支持');
     //   this.stage.add(text);
     // }
     this.scale = this.props.zoom;
 
-    this.stage.dom.addEventListener('mousedown', this.onStageMouseDown);
+    this.stage.dom?.addEventListener('mousedown', this.onStageMouseDown);
     window.addEventListener('resize', this.onWinResize);
     setTimeout(() => {
       // const sx = this.renderCmp.clientWidth / this.props.width;
@@ -215,9 +211,11 @@ export default class Render extends Component<RenderProps> {
         // this.scale = Math.min(sx, sy);
         this.setScale();
       }, 100);
-      this.stage.width = this.props.width;
-      this.stage.height = this.props.height;
-      this.stage.bgSrc = this.props.bgSrc;
+      if (this.stage) {
+        this.stage.width = this.props.width;
+        this.stage.height = this.props.height;
+        this.stage.bgSrc = this.props.bgSrc;
+      }
     }
     if (prevProps.zoom !== this.props.zoom) {
       this.scale = this.props.zoom;
@@ -232,14 +230,13 @@ export default class Render extends Component<RenderProps> {
   // }
 
   toJson = () => {
-    return this.stage.toJson();
+    return this.stage?.toJson();
   };
 
   fromJson = (json: any) => {
-    this.stage.fromJson(json);
+    this.stage?.fromJson(json);
     this.setState({
       target: null,
-      userCount: this.stage.children.filter((child) => child.type === 'Figure').length,
     });
   };
 
@@ -251,7 +248,7 @@ export default class Render extends Component<RenderProps> {
 
   // 为什么使用transform后修改winsize会导致svg文字渲染异常？
   fixTextSize(root = this.stage) {
-    root.children.forEach((v) => {
+    root?.children.forEach((v) => {
       if (v instanceof Text) {
         v.fontSize = v.fontSize;
       }
@@ -268,12 +265,14 @@ export default class Render extends Component<RenderProps> {
   tx: number = 0;
   ty: number = 0;
   onDragStart = () => {
-    this.tx = this.selectNode.x;
-    this.ty = this.selectNode.y;
+    this.tx = this.selectNode?.x || 0;
+    this.ty = this.selectNode?.y || 0;
   };
   onDrag = ({ top, left }: { top: number; left: number }) => {
-    this.selectNode.x = +(this.tx + left).toFixed(1);
-    this.selectNode.y = +(this.ty + top).toFixed(1);
+    if (this.selectNode) {
+      this.selectNode.x = +(this.tx + left).toFixed(1);
+      this.selectNode.y = +(this.ty + top).toFixed(1);
+    }
   };
   onDragEnd = () => {
     this.props.onUpdate();
@@ -282,7 +281,9 @@ export default class Render extends Component<RenderProps> {
   // 旋转
   onRotateStart = () => {};
   onRotate = ({ delta }: { delta: number }) => {
-    this.selectNode.rotation += +delta.toFixed(1);
+    if (this.selectNode) {
+      this.selectNode.rotation += +delta.toFixed(1);
+    }
   };
   onRotateEnd = () => {
     this.props.onUpdate();
@@ -317,23 +318,23 @@ export default class Render extends Component<RenderProps> {
         }
       }
     } else if (this.selectNode instanceof Figure) {
-      const boundingRect = this.renderBox.getBoundingClientRect();
+      const boundingRect = this.renderBox?.getBoundingClientRect();
       if (direction[1] === -1) {
         this.selectNode.scaleY = this.selectNode.scaleY * delta[1];
-        this.selectNode.y = (clientY - boundingRect.y) / this.scale;
+        this.selectNode.y = (clientY - (boundingRect?.y || 0)) / this.scale;
       }
       if (direction[1] === 1) {
         this.selectNode.scaleY = Math.abs(this.selectNode.scaleY * delta[1]);
       }
       if (direction[0] === -1) {
-        this.selectNode.x = (clientX - boundingRect.x) / this.scale;
+        this.selectNode.x = (clientX - (boundingRect?.x || 0)) / this.scale;
         this.selectNode.scaleX = Math.abs(this.selectNode.scaleX * delta[0]);
       }
       if (direction[0] === 1) {
         this.selectNode.scaleX = Math.abs(this.selectNode.scaleX * delta[0]);
       }
     } else if (this.selectNode instanceof Text) {
-      const boundingRect = this.renderBox.getBoundingClientRect();
+      const boundingRect = this.renderBox?.getBoundingClientRect() as DOMRect;
       // 往上拉
       if (direction[1] === -1) {
         this.selectNode.y = (clientY - boundingRect.y) / this.scale;
@@ -384,7 +385,7 @@ export default class Render extends Component<RenderProps> {
   saveToImage = async (name?: string, width?: number, height?: number, callback?: any) => {
     const { stage, props } = this;
     await covertSVGToImage(
-      stage.dom,
+      stage?.dom as SVGGElement,
       name || 'test',
       width || props.width,
       height || props.height,
@@ -420,7 +421,7 @@ export default class Render extends Component<RenderProps> {
     const height = props.height * scale;
 
     // 过小边界
-    const { clientWidth, clientHeight } = renderCmp;
+    const { clientWidth, clientHeight } = renderCmp as HTMLDivElement;
 
     // let edgeLeft = 0,
     //   edgeTop = 0;
@@ -431,7 +432,7 @@ export default class Render extends Component<RenderProps> {
     if (width >= clientWidth) {
       renderCmp!.style.width = width + 40 + 'px';
     } else {
-      renderCmp.style.width = '100%';
+      (renderCmp as HTMLDivElement).style.width = '100%';
     }
     if (height >= clientHeight) {
       renderCmp!.style.height = height + 140 + 'px';
@@ -455,7 +456,7 @@ export default class Render extends Component<RenderProps> {
     // TODO 发现svg渲染的文字会收到transform:scale的影响渲染异常，只能使用老旧的zoom属性了
     // TODO 这个属性略卡
     // renderStage!.style["zoom"] = scale;
-    this.stage.zoom = scale;
+    this.stage && (this.stage.zoom = scale);
     this.moveable.updateRect();
   };
 
@@ -465,10 +466,11 @@ export default class Render extends Component<RenderProps> {
    */
   onDrop = (e: any) => {
     const { clientX, clientY, dataTransfer } = e;
-    const boundingRect = this.renderBox.getBoundingClientRect();
-    const x = (clientX - boundingRect.x) / this.scale;
-    const y = (clientY - boundingRect.y) / this.scale;
+    const boundingRect = this.renderBox?.getBoundingClientRect();
+    const x = (clientX - (boundingRect?.x || 0)) / this.scale;
+    const y = (clientY - (boundingRect?.y || 0)) / this.scale;
     const data = JSON.parse(dataTransfer.getData('module'));
+    //@ts-ignore
     const node = new (getClass(data.type))();
     node.x = x;
     node.y = y;
@@ -482,17 +484,7 @@ export default class Render extends Component<RenderProps> {
       });
       return;
     }
-    if (data.type === 'Figure') {
-      if (this.state.userCount >= this.props.userLimit) {
-        message.error('超过人数上限:' + this.props.userLimit);
-        return;
-      } else {
-        this.setState({
-          userCount: this.state.userCount + 1,
-        });
-      }
-    }
-    this.stage.add(node);
+    this.stage?.add(node);
   };
   onDragOver = (e: any) => e.preventDefault();
 
@@ -501,7 +493,7 @@ export default class Render extends Component<RenderProps> {
 
     // @ts-ignore
     const _id = target.getAttribute('_id');
-    const node = this.stage.findNode(_id);
+    const node: Node<any> = this.stage?.findNode(_id) as Node<any>;
 
     if (node == this.stage) {
       this.props.onSelect(null);
@@ -523,12 +515,7 @@ export default class Render extends Component<RenderProps> {
    */
   onDeleteNode = () => {
     const { selectNode } = this;
-    selectNode.parent.remove(selectNode);
-    if (selectNode.type === 'Figure') {
-      this.setState({
-        userCount: this.state.userCount - 1,
-      });
-    }
+    selectNode?.parent?.remove(selectNode);
     this.setState({ target: null });
   };
 
@@ -537,24 +524,24 @@ export default class Render extends Component<RenderProps> {
    */
   onMoveUp = () => {
     const { selectNode } = this;
-    const parent = selectNode.parent;
+    const parent = selectNode?.parent as Group;
 
-    const selectIndex = parent.children.indexOf(selectNode);
+    const selectIndex = parent.children.indexOf(selectNode as Node<any>);
 
     // 看看上一个有没有
     if (selectIndex == parent.children.length - 1) return;
 
     const nextNode = parent.children[selectIndex + 1];
 
-    const selectDom = selectNode.dom;
+    const selectDom = selectNode?.dom;
     const nextDom = nextNode.dom;
 
     // 交换渲染
-    parent.dom.insertBefore(nextDom, selectDom);
+    nextDom && parent.dom?.insertBefore(nextDom, selectDom);
 
     // 交换数据
     parent.children[selectIndex] = nextNode;
-    parent.children[selectIndex + 1] = selectNode;
+    parent.children[selectIndex + 1] = selectNode as Node<any>;
   };
 
   /**
@@ -562,24 +549,24 @@ export default class Render extends Component<RenderProps> {
    */
   onMoveDown = () => {
     const { selectNode } = this;
-    const parent = selectNode.parent;
+    const parent = selectNode?.parent as Group;
 
     // 看看下一个有没有
-    const selectIndex = parent.children.indexOf(selectNode);
+    const selectIndex = parent?.children.indexOf(selectNode as Node<any>);
 
     if (selectIndex == 0) return;
 
-    const beforeNode = parent.children[selectIndex - 1];
+    const beforeNode = parent?.children[selectIndex - 1];
 
-    const selectDom = selectNode.dom;
-    const beforeDom = beforeNode.dom;
+    const selectDom = selectNode?.dom;
+    const beforeDom = beforeNode?.dom;
 
     // 交换渲染
-    parent.dom.insertBefore(selectDom, beforeDom);
+    parent?.dom?.insertBefore(selectDom, beforeDom);
 
     // 交换数据
     parent.children[selectIndex] = beforeNode;
-    parent.children[selectIndex - 1] = selectNode;
+    parent.children[selectIndex - 1] = selectNode as Node<any>;
   };
 
   render() {
@@ -591,6 +578,31 @@ export default class Render extends Component<RenderProps> {
         className={styles.render}
         ref={(ref: HTMLDivElement) => (this.renderCmp = ref)}
       >
+        <MaterialRepo
+          visible={this.state.visible}
+          onFinish={async (urls: string[]) => {
+            if (urls.length > 0) {
+              const node = this.state.node as any;
+              if (node === null) {
+                return;
+              }
+              const url = urls[0].replace('//qzz-material.forwe.store', '//qzz-fadmin.forwe.store');
+              node.setSrc(url);
+              const image = await getImage(url);
+              if (image.width > this.props.width / 2) {
+                node.width = this.props.width / 2;
+                node.height = (this.props.width / 2) * (image.height / image.width);
+              }
+              this.stage?.add(node);
+            }
+          }}
+          visibleChange={(vis: boolean) => {
+            this.setState({
+              visible: vis,
+            });
+          }}
+        />
+
         {/*这层用来解决transform不影响包围大小的问题*/}
         <div className={styles.renderBox} ref={(ref: HTMLDivElement) => (this.renderBox = ref)}>
           <div
@@ -598,31 +610,32 @@ export default class Render extends Component<RenderProps> {
             ref={(ref: HTMLDivElement) => (this.renderStage = ref)}
             onDrop={this.onDrop}
             onDoubleClick={(e) => {
-              if (e.target.nodeName === 'text') {
-                e.target.style.display = 'none';
+              const target = e.target as any;
+              if (target.nodeName === 'text') {
+                target.style.display = 'none';
                 this.setState({ target: null });
-                let node = document.createElement('input');
-                node.value = e.target.innerHTML;
+                const node = document.createElement('input');
+                node.value = target.innerHTML;
                 document.body.appendChild(node);
                 node.select();
-                const text = this.stage.findNode(e.target.getAttribute('_id'));
+                const text = this.stage?.findNode(target.getAttribute('_id')) as Node<any>;
                 node.onblur = () => {
                   text.text = node.value;
                   document.body.removeChild(node);
-                  e.target.style.display = 'block';
+                  target.style.display = 'block';
                   this.selectNode = text;
                   this.props.onSelect(text);
-                  this.setState({ target: text.dom });
+                  this.setState({ target: text?.dom });
                 };
                 node.style.position = 'absolute';
-                node.style.fontSize = text.fontSize * this.scale + 'px';
+                node.style.fontSize = text?.fontSize * this.scale + 'px';
                 node.style.outline = 'none';
                 node.style.padding = '0';
                 node.style.border = '1px solid #4af';
                 node.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
-                node.width = text.width;
+                node.width = text?.width;
 
-                const rect = this.renderBox.getBoundingClientRect();
+                const rect = this.renderBox?.getBoundingClientRect() as DOMRect;
                 node.style.top = text.y * this.scale + rect.top - 6 + 'px';
                 node.style.left = text.x * this.scale + rect.left - 2 + 'px';
               }
@@ -633,7 +646,7 @@ export default class Render extends Component<RenderProps> {
         <Moveable
           ref={(ref) => (this.moveable = ref)}
           target={target}
-          ables={[DimensionViewable]}
+          ables={[Editable]}
           props={{
             editable: true,
             dimensionViewable: isText,

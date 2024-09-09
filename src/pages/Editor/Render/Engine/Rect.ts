@@ -4,43 +4,42 @@
  * Copyright © 2022 haiyoucuv. All rights reserved.
  */
 
-import { createSvgElement, setAttribute, setId } from "./utils";
-import { Node } from "./Node";
+import { createSvgElement, setAttribute, setId } from './utils';
+import { Node } from './Node';
 
 export class Rect extends Node<SVGRectElement> {
+  protected _type: string = 'Rect';
 
-  protected _type: string = "Rect";
-
-  constructor(width: number = 100, height: number = 100, fill = "#000000") {
+  constructor(width: number = 100, height: number = 100, fill = '#000000') {
     super();
-    this._dom = createSvgElement("rect") as SVGRectElement;
+    this._dom = createSvgElement('rect') as SVGRectElement;
     setId(this._dom, this._id);
     this.height = height;
     this.width = width;
     this.fill = fill;
-    this.stroke = "#000000";
+    this.stroke = '#000000';
     this.strokeWidth = 0;
   }
 
-  protected _fill: string = "#000000";
+  protected _fill: string = '#000000';
   get fill() {
     return this._fill;
   }
 
   set fill(fill: string) {
     this._fill = fill;
-    setAttribute(this.dom, "fill", `${fill}`);
+    this.dom && setAttribute(this.dom, 'fill', `${fill}`);
     if (this.onChange) this.onChange();
   }
 
-  protected _stroke: string = "#000000";
+  protected _stroke: string = '#000000';
   get stroke() {
     return this._stroke;
   }
 
   set stroke(stroke: string) {
     this._stroke = stroke;
-    setAttribute(this.dom, "stroke", `${stroke}`);
+    this.dom && setAttribute(this.dom, 'stroke', `${stroke}`);
     if (this.onChange) this.onChange();
   }
 
@@ -51,7 +50,7 @@ export class Rect extends Node<SVGRectElement> {
 
   set strokeWidth(strokeWidth: number) {
     this._strokeWidth = strokeWidth;
-    setAttribute(this.dom, "stroke-width", `${strokeWidth}`);
+    this.dom && setAttribute(this.dom, 'stroke-width', `${strokeWidth}`);
     if (this.onChange) this.onChange();
   }
 
@@ -62,7 +61,7 @@ export class Rect extends Node<SVGRectElement> {
 
   set width(width: number) {
     this._width = width;
-    setAttribute(this.dom, "width", `${width}`);
+    this.dom && setAttribute(this.dom, 'width', `${width}`);
     this.updateTransform();
   }
 
@@ -73,21 +72,23 @@ export class Rect extends Node<SVGRectElement> {
 
   set height(height: number) {
     this._height = height;
-    setAttribute(this.dom, "height", `${height}`);
+    this.dom && setAttribute(this.dom, 'height', `${height}`);
     this.updateTransform();
   }
 
   toJson() {
     const { x, y, rotation, type, width, height, stroke, strokeWidth, fill } = this;
     return {
-      x, y, rotation,
+      x,
+      y,
+      rotation,
       type,
       width,
       height,
       stroke,
       strokeWidth,
       fill,
-    }
+    };
   }
 
   fromJson(json: any) {

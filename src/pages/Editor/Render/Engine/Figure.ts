@@ -8,24 +8,22 @@
 // import { Image } from "./Engine/Image";
 // import { Group } from "./Engine/Group";
 // import { Text } from "./Engine/Text";
-import { setAttribute, setId } from "./utils";
-import { Image } from "./Image";
-import { Group } from "./Group";
-import { Text } from "./Text";
+import { setAttribute, setId } from './utils';
+import { Image } from './Image';
+import { Group } from './Group';
+import { Text } from './Text';
 
 export class Figure extends Group {
-
-  protected _type = "Figure";
+  protected _type = 'Figure';
 
   avatar: Image;
   name: Text;
 
-  protected _userId: string = "";
+  protected _userId: string = '';
 
   get userId() {
     return this._userId;
   }
-
 
   set userId(userId: string) {
     this._userId = userId;
@@ -93,18 +91,17 @@ export class Figure extends Group {
 
   updateTransform = () => {
     const { rotation, x, y, bBox, scaleX, scaleY } = this;
-    const rotate = `rotate(${rotation} ${bBox.x},${bBox.y})`;
+    const rotate = `rotate(${rotation} ${bBox?.x},${bBox?.y})`;
     const translate = `translate(${x} ${y})`;
     const scale = `scale(${scaleX} ${scaleY})`;
-    setAttribute(
-      this._dom,
-      "transform",
-      [translate, rotate, scale].join(" ")
-    );
+    this._dom && setAttribute(this._dom, 'transform', [translate, rotate, scale].join(' '));
     if (this.onChange) this.onChange();
-  }
+  };
 
-  constructor(src = "https://qzz-static.forwe.store/fighting-manager/imgs/%E9%BB%98%E8%AE%A4%E5%A4%B4%E5%83%8F.png", text = "姓名") {
+  constructor(
+    src = 'https://qzz-static.forwe.store/fighting-manager/imgs/%E9%BB%98%E8%AE%A4%E5%A4%B4%E5%83%8F.png',
+    text = '姓名',
+  ) {
     super();
     this.avatar = this.add(new Image(src));
     this.avatar.height = 100;
@@ -112,21 +109,41 @@ export class Figure extends Group {
     this.avatar.roundness = 100;
 
     this.name = this.add(new Text(text));
-    setAttribute(this.name.dom, "text-anchor", "middle");
+    this.name.dom && setAttribute(this.name.dom, 'text-anchor', 'middle');
     this.name.y = 112;
     this.name.x = 50;
-
-    setId(this.dom, this.id);
-
+    this.dom && setId(this.dom, this.id);
   }
 
   toJson() {
-    const { x, y, rotation, type, text, scaleX, scaleY, roundness, fill, fontSize, userId, avatar } = this;
-    return {
-      x, y, rotation,
+    const {
+      x,
+      y,
+      rotation,
       type,
-      text, src: avatar.src, scaleX, scaleY, roundness, fill, fontSize, userId
-    }
+      text,
+      scaleX,
+      scaleY,
+      roundness,
+      fill,
+      fontSize,
+      userId,
+      avatar,
+    } = this;
+    return {
+      x,
+      y,
+      rotation,
+      type,
+      text,
+      src: avatar.src,
+      scaleX,
+      scaleY,
+      roundness,
+      fill,
+      fontSize,
+      userId,
+    };
   }
 
   fromJson(json: any) {
@@ -144,6 +161,4 @@ export class Figure extends Group {
     this._userId = userId;
     return this;
   }
-
 }
-

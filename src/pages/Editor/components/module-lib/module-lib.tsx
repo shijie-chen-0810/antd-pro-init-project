@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './module-lib.less';
 import { Image, List } from 'antd';
 import type { Module } from '@/pages/Editor/types';
@@ -12,7 +12,7 @@ const DefaultModuleList: Module[] = [
     type: 'Text',
   },
   {
-    name: '素材',
+    name: '图片',
     // icon: <PictureOutlined />,
     icon: 'https://cdn.codeboxes.cn/static/credits/img/assets/ic_edit_sc_nor%402x.png',
     id: '__Image',
@@ -32,8 +32,6 @@ export interface ModuleLibProps {
 }
 
 const ModuleLib: React.FC<ModuleLibProps> = ({ template }) => {
-  const [dataList, setDataList] = useState<Module[]>(DefaultModuleList);
-
   const handleDragStart = (e: React.DragEvent, target: Module) => {
     e.dataTransfer.setData('module', JSON.stringify(target));
   };
@@ -44,7 +42,7 @@ const ModuleLib: React.FC<ModuleLibProps> = ({ template }) => {
       <div className={styles.moduleList}>
         <List
           grid={{ gutter: 0, column: 1 }}
-          dataSource={dataList}
+          dataSource={DefaultModuleList}
           renderItem={(item) => {
             return (
               <List.Item

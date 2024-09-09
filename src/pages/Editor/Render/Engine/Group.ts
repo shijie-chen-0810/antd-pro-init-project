@@ -4,12 +4,11 @@
  * Copyright © 2022 haiyoucuv. All rights reserved.
  */
 
-import { getClass } from "./typeMap";
-import { createSvgElement, setId } from "./utils";
-import { Node } from "./Node";
+import { getClass } from './typeMap';
+import { createSvgElement, setId } from './utils';
+import { Node } from './Node';
 
 export class Group extends Node<SVGGElement> {
-
   protected _waterMark: any;
 
   get waterMark(): any {
@@ -17,10 +16,10 @@ export class Group extends Node<SVGGElement> {
   }
 
   set waterMark(node: any) {
-    this._waterMark = node
+    this._waterMark = node;
   }
 
-  protected _type: string = "Group";
+  protected _type: string = 'Group';
 
   protected _children: Node<SVGGraphicsElement>[] = [];
   get children() {
@@ -29,25 +28,25 @@ export class Group extends Node<SVGGElement> {
 
   constructor() {
     super();
-    this._dom = createSvgElement("g") as SVGGElement;
+    this._dom = createSvgElement('g') as SVGGElement;
     setId(this._dom, this._id);
   }
 
   add<T extends Node<any>>(node: T) {
     if (node.parent) node.parent.remove(node);
-    this.dom.appendChild(node.dom)
+    this.dom?.appendChild(node.dom);
     this.children.push(node);
-    node["_parent"] = this;
+    node['_parent'] = this;
     return node;
   }
 
   remove<T extends Node<any>>(node: T) {
     const index = this.children.indexOf(node);
     if (index > -1) {
-      this.dom.removeChild(node.dom);
+      this.dom?.removeChild(node.dom);
       this.children.splice(index, 1);
     }
-    node["_parent"] = null;
+    node['_parent'] = null;
     return node;
   }
 
@@ -55,7 +54,7 @@ export class Group extends Node<SVGGElement> {
    * 查找子节点的
    * @return {Node<any> | null}
    */
-  findNode(id) {
+  findNode(id: string | number): Node<any> | null {
     if (id == `${this.id}`) return this;
 
     const children = this.children;
@@ -80,14 +79,15 @@ export class Group extends Node<SVGGElement> {
     });
 
     return {
-      x, y, rotation,
+      x,
+      y,
+      rotation,
       type,
       children: childrenNode,
-    }
-
+    };
   }
 
-  fromJson(json): any {
+  fromJson(json: any): any {
     this.children.forEach((v) => this.remove(v));
 
     const { x, y, rotation, children } = json;
@@ -96,7 +96,7 @@ export class Group extends Node<SVGGElement> {
     this.y = y;
     this.rotation = rotation;
 
-    children.forEach((v) => {
+    children.forEach((v: any) => {
       // @ts-ignore
       const child = new getClass(v.type);
       child.fromJson(v);
@@ -104,7 +104,5 @@ export class Group extends Node<SVGGElement> {
     });
 
     return this;
-
   }
-
 }

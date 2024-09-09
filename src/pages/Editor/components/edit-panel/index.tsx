@@ -2,11 +2,11 @@ import type { ReactElement } from 'react';
 import React, { useEffect, useImperativeHandle, useReducer, useState } from 'react';
 import type { PosterMeta } from '@/pages/Editor/types';
 import styles from './index.less';
-import { Avatar, Empty, Form, Image, Input, InputNumber, Select, Space, Tabs, Tag } from 'antd';
+import { Button, Empty, Form, Input, InputNumber, Select, Tabs, Image } from 'antd';
 import TabPane from '@ant-design/pro-card/es/components/TabPane';
 import type { Node } from '@/pages/Editor/Render/Engine';
-import { DeleteOutlined } from '@ant-design/icons';
-import { onlyUnique } from '@/utils/utils';
+import MaterialRepo from '@/components/MaterialRepo';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 
 export interface EditPanelProps {
   meta: PosterMeta; // 文档信息，
@@ -20,10 +20,19 @@ export interface EditPanelRef {
   handleUpdate: () => void;
 }
 
+interface FormProps {
+  name: string;
+  key: string;
+  isDynamic?: boolean;
+  all?: boolean;
+  component: ReactElement | ((payload: any) => ReactElement);
+}
+
 const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) => {
   const [, forceUpdate] = useReducer((s) => s + 1, 0);
+  const [visible, setVisible] = useState<boolean>(false);
 
-  const [form, setForm] = useState<{ name: string; key: string; component: ReactElement }[]>([]);
+  const [form, setForm] = useState<FormProps[]>([]);
 
   useImperativeHandle(ref, () => ({
     handleUpdate: () => {
@@ -36,8 +45,7 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
     setActiveKey('1');
     if (!props.selectNode) return;
     setActiveKey('2');
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    let form: { name: string; key: string; component: ReactElement; all?: boolean }[] = [];
+    let form: FormProps[] = [];
     switch (props.selectNode.type) {
       case 'Text':
         form = [
@@ -55,6 +63,39 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
             component: (
               <Input type="color" onChange={(e) => props.onValueChange('fill', e.target.value)} />
             ),
+          },
+          {
+            name: '表单字段',
+            key: 'isForm',
+            isDynamic: true,
+            component: (selectNode) => {
+              return (
+                <>
+                  <Form.Item label="表单字段">
+                    <Select
+                      options={[
+                        { label: '是', value: true },
+                        { label: '否', value: false },
+                      ]}
+                      value={(props.selectNode as any).isForm}
+                      onChange={(value) => props.onValueChange('isForm', value)}
+                    />
+                  </Form.Item>
+                  {selectNode.isForm ? (
+                    <Form.Item label="必填">
+                      <Select
+                        options={[
+                          { label: '是', value: true },
+                          { label: '否', value: false },
+                        ]}
+                        value={(props.selectNode as any).isRequired}
+                        onChange={(value) => props.onValueChange('isRequired', value)}
+                      />
+                    </Form.Item>
+                  ) : null}
+                </>
+              );
+            },
           },
         ];
         break;
@@ -74,12 +115,23 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
         ];
         break;
     }
-
     setForm(form);
   }, [props.selectNode]);
 
   return (
     <div className={styles.panel}>
+      <MaterialRepo
+        visible={visible}
+        visibleChange={setVisible}
+        onFinish={(urls) => {
+          if (urls && urls.length > 0) {
+            props.onMetaChange(
+              'bgSrc',
+              urls[0].replace('//qzz-material.forwe.store', '//qzz-fadmin.forwe.store'),
+            );
+          }
+        }}
+      />
       <Tabs activeKey={activeKey} onChange={setActiveKey}>
         <TabPane tab="页面编辑" key="1">
           <Form name="t" wrapperCol={{ span: 16 }}>
@@ -97,7 +149,6 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
                 onChange={(v) => props.onMetaChange('width', v || 0)}
               />
             </Form.Item>
-
             <Form.Item label="画布高度">
               <InputNumber
                 precision={0}
@@ -106,42 +157,58 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
                 onChange={(v) => props.onMetaChange('height', v || 0)}
               />
             </Form.Item>
+            <Form.Item label="画布背景">
+              {props.meta.bgSrc ? (
+                <div className={styles.bg}>
+                  <Image preview={false} width={155} height={290} src={props.meta.bgSrc} />
+                  <div className={styles.imgBg}>
+                    <Button onClick={() => setVisible(true)} type="primary">
+                      修改背景
+                    </Button>
+                  </div>
+                  <div onClick={() => props.onMetaChange('bgSrc', '')} className={styles.close}>
+                    <DeleteOutlined />
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.uploader} onClick={() => setVisible(true)}>
+                  <PlusOutlined />
+                  点击上传背景图片
+                </div>
+              )}
+            </Form.Item>
           </Form>
         </TabPane>
         <TabPane tab="图层属性" key="2">
           {props.selectNode ? (
             <Form name="p" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
               {form
-                .filter((item) => {
-                  if (props.template) {
-                    if (item.key === 'user') {
-                      return false;
-                    } else {
-                      return true;
-                    }
-                  }
-                  return true;
-                })
-                .map((v: any) => {
-                  return (
-                    <Form.Item label={v.name} key={v.name}>
-                      {{
-                        ...v.component,
-                        props: {
-                          ...v.component.props,
-                          className: [
-                            ...(v.component.props?.className || []),
-                            styles.inputShape,
-                          ].join(' '),
-                          value: v.all ? props.selectNode : (props.selectNode as any)[v.key],
-                          onChange: v.component.props.onChange
-                            ? v.component.props.onChange
-                            : (e: any) => props.onValueChange(v.key, Math.floor(e) || 0),
-                        },
-                      }}
-                    </Form.Item>
-                  );
-                })}
+                .filter((item) => !item.isDynamic)
+                .map((v: any) => (
+                  <Form.Item label={v.name} key={v.name}>
+                    {{
+                      ...v.component,
+                      props: {
+                        ...v.component.props,
+                        className: [
+                          ...(v.component.props?.className || []),
+                          styles.inputShape,
+                        ].join(' '),
+                        value: v.all ? props.selectNode : (props.selectNode as any)[v.key],
+                        onChange: v.component.props.onChange
+                          ? v.component.props.onChange
+                          : (e: any) => props.onValueChange(v.key, Math.floor(e) || 0),
+                      },
+                    }}
+                  </Form.Item>
+                ))}
+              {form
+                .filter((item) => item.isDynamic)
+                .map((v) => (
+                  <div key={v.key}>
+                    {typeof v.component === 'function' ? v.component(props.selectNode) : null}
+                  </div>
+                ))}
               <Form.Item label="X">
                 <InputNumber
                   className={styles.inputShape}
