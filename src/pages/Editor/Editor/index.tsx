@@ -1,6 +1,6 @@
 import Render from '@/pages/Editor/Render';
 import React, { useRef, useState } from 'react';
-import { Button, Layout, PageHeader, Popconfirm, Space } from 'antd';
+import { Button, Layout, Modal, PageHeader, Popconfirm, Space, Image } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { Content } from 'antd/es/layout/layout';
 import styles from './index.less';
@@ -16,7 +16,9 @@ import SlidingBar from '@/components/SlidingBar';
 
 const Editor: React.FC = () => {
   const [currentSelect, setCurrentSelect] = useState<Node<any> | undefined>();
-  const [zoom, setZoom] = useState<number>(0.5);
+  const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+  const [imgSrc, setImgSrc] = useState<string>();
+  const [zoom, setZoom] = useState<number>(0.4);
 
   const [meta, setMeta] = useState<PosterMeta>({
     title: '激励海报',
@@ -49,6 +51,18 @@ const Editor: React.FC = () => {
   };
   const getExtra = () => {
     return [
+      <Button
+        key="preview"
+        type="primary"
+        onClick={async () => {
+          await stageRef.current?.saveToImage(meta.title, meta.width, meta.height, (src: any) => {
+            setImgSrc(src);
+          });
+          setPreviewOpen(true);
+        }}
+      >
+        预览
+      </Button>,
       <Button
         key="save"
         type="primary"
@@ -108,6 +122,9 @@ const Editor: React.FC = () => {
           />
         </Sider>
       </Layout>
+      <Modal open={previewOpen} onCancel={() => setPreviewOpen(false)}>
+        <Image width={300} src={imgSrc} />
+      </Modal>
     </div>
   );
 };

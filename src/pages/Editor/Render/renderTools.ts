@@ -95,15 +95,15 @@ export async function covertSVGToImage(
   const image = await getImage(src);
 
   ctx.drawImage(image, 0, 0);
-
-  toolCanvas.toBlob(
-    (blob) => {
-      // @ts-ignore
-      callback(blob);
-    },
-    type,
-    1,
-  );
+  callback(src);
+  // toolCanvas.toBlob(
+  //   (blob) => {
+  //     // @ts-ignore
+  //     callback(blob);
+  //   },
+  //   type,
+  //   1,
+  // );
 
   // const a = document.createElement("a");
   // a.download = `${name}.${type}`;

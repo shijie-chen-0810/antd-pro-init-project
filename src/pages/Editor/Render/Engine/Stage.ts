@@ -106,7 +106,7 @@ export class Stage extends Group {
     bg.setAttribute('height', 48 + 'px');
     bg.setAttribute('fill', 'rgba(0,0,0,0.3)');
 
-    waterMark.appendChild(document.createTextNode('由蒲公英提供技术服务'));
+    waterMark.appendChild(document.createTextNode('由鑫蜂维提供技术服务'));
 
     this.waterMark = waterMark;
     this._dom.appendChild(this._bg);

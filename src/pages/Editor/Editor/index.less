@@ -1,18 +1,19 @@
 .editor {
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
   overflow: hidden;
 
   .layoutStyle {
     flex: auto;
     height: 0;
+    min-height: auto;
   }
 
   .layoutContent {
+    position: relative;
     height: 100%;
     overflow: auto;
-    position: relative;
   }
 
   // .siderLeft {}

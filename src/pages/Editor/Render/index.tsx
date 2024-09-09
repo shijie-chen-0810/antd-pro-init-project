@@ -23,7 +23,6 @@ import { Draggable, makeMoveable, Scalable, Rotatable } from 'react-moveable';
 
 import styles from './index.less';
 import MaterialRepo from '@/components/MaterialRepo';
-import { message } from 'antd';
 
 type RenderProps = {
   width: number;
