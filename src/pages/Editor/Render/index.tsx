@@ -25,6 +25,7 @@ import styles from './index.less';
 import MaterialRepo from '@/components/MaterialRepo';
 
 type RenderProps = {
+  title: string;
   width: number;
   height: number;
   bgSrc: string;
@@ -176,6 +177,7 @@ export default class Render extends Component<RenderProps> {
 
     const stage = (this.stage = new Stage(this.props.width, this.props.height));
     this.stage.bgSrc = this.props.bgSrc;
+    this.stage.title = this.props.title;
     stage.dom && this.renderStage?.appendChild(stage.dom);
     // if (this.props.template) {
     //   const text = new Text('由蒲公英提供技术支持');
@@ -202,7 +204,8 @@ export default class Render extends Component<RenderProps> {
     if (
       prevProps.width !== this.props.width ||
       prevProps.height !== this.props.height ||
-      prevProps.bgSrc !== this.props.bgSrc
+      prevProps.bgSrc !== this.props.bgSrc ||
+      prevProps.title !== this.props.title
     ) {
       setTimeout(() => {
         // const sx = this.renderCmp.clientWidth / this.props.width;
@@ -214,6 +217,7 @@ export default class Render extends Component<RenderProps> {
         this.stage.width = this.props.width;
         this.stage.height = this.props.height;
         this.stage.bgSrc = this.props.bgSrc;
+        this.stage.title = this.props.title;
       }
     }
     if (prevProps.zoom !== this.props.zoom) {

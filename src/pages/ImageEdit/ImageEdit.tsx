@@ -96,7 +96,7 @@ const ImageCrop: React.FC = () => {
           onClick={() =>
             history.push({
               pathname: '/imageEdit/editor',
-              state: { imgIndex: cropImage },
+              search: `templateId=1`,
             })
           }
         >

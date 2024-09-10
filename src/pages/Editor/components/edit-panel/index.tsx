@@ -137,7 +137,7 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
           <Form name="t" wrapperCol={{ span: 16 }}>
             <Form.Item label="海报名称">
               <Input
-                defaultValue={props.meta.title}
+                value={props.meta.title}
                 onChange={(v) => props.onMetaChange('title', v.target.value)}
               />
             </Form.Item>

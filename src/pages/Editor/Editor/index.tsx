@@ -1,6 +1,6 @@
 import Render from '@/pages/Editor/Render';
-import React, { useRef, useState } from 'react';
-import { Button, Layout, Modal, PageHeader, Popconfirm, Space, Image } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, Layout, Modal, PageHeader, Popconfirm, Space, Image, message } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { Content } from 'antd/es/layout/layout';
 import styles from './index.less';
@@ -13,12 +13,15 @@ import queryString from 'query-string';
 import { LogoutOutlined, SaveOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import SlidingBar from '@/components/SlidingBar';
+import { useRequest } from 'ahooks-v2';
+import { getStageData, insertStageData } from '@/services/ant-design-pro/api';
+import { getParam } from '@/utils/utils';
 
 const Editor: React.FC = () => {
   const [currentSelect, setCurrentSelect] = useState<Node<any> | undefined>();
   const [previewOpen, setPreviewOpen] = useState<boolean>(false);
   const [imgSrc, setImgSrc] = useState<string>();
-  const [zoom, setZoom] = useState<number>(0.4);
+  const [zoom, setZoom] = useState<number>(0.45);
 
   const [meta, setMeta] = useState<PosterMeta>({
     title: '激励海报',
@@ -33,6 +36,32 @@ const Editor: React.FC = () => {
   const stageRef = useRef<Render | null>(null);
 
   const editorRef = useRef<EditPanelRef | null>(null);
+
+  const { run: runInsertStageData } = useRequest(insertStageData, {
+    manual: true,
+    onSuccess: (res) => {
+      if (res.result) {
+        message.success('保存成功');
+        history.replace('/imageEdit');
+      }
+    },
+  });
+  const { run: runGetStageData } = useRequest(getStageData, {
+    manual: true,
+    onSuccess: (res) => {
+      const result = res.result;
+      if (result) {
+        stageRef.current?.fromJson(result);
+        console.log(meta, 'meta');
+        setMeta({
+          ...meta,
+          title: result.title,
+          bgSrc: result.bgSrc,
+          type: result.type,
+        });
+      }
+    },
+  });
 
   const handleMetaChange = (key: keyof PosterMeta, value: any) => {
     setMeta({ ...meta, [key]: value });
@@ -49,6 +78,20 @@ const Editor: React.FC = () => {
   const handleStageUpdate = () => {
     editorRef.current?.handleUpdate();
   };
+
+  const handleSave = () => {
+    const stageData = stageRef.current?.toJson();
+    console.log(stageData, 'sta');
+    runInsertStageData(stageData);
+  };
+
+  useEffect(() => {
+    const templateId = getParam('templateId');
+    if (!!templateId) {
+      runGetStageData();
+    }
+  }, []);
+
   const getExtra = () => {
     return [
       <Button
@@ -63,13 +106,7 @@ const Editor: React.FC = () => {
       >
         预览
       </Button>,
-      <Button
-        key="save"
-        type="primary"
-        onClick={() => {
-          console.log(stageRef.current?.toJson());
-        }}
-      >
+      <Button key="save" type="primary" onClick={handleSave}>
         <SaveOutlined />
         保存
       </Button>,
@@ -101,6 +138,7 @@ const Editor: React.FC = () => {
           <Render
             ref={stageRef}
             template={!!template}
+            title={meta.title}
             width={meta.width}
             height={meta.height}
             bgSrc={meta.bgSrc}

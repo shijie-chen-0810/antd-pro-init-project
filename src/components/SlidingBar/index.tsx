@@ -24,7 +24,7 @@ const SlidingBar: React.FC<{ zoom: number; setZoom: (zoom: number) => void }> = 
         {/* 滑动条 */}
         <Slider
           value={zoom}
-          step={0.1}
+          step={0.05}
           onChange={setZoom}
           className={styles.progressBar}
           max={5}

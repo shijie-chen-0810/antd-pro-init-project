@@ -209,3 +209,16 @@ export const deepObjectMerge = (FirstOBJ: Record<string, any>, SecondOBJ: Record
 export const onlyUnique = (value: any, index: number, self: any[]) => {
   return self.indexOf(value) === index;
 };
+
+export const getParam = (paramName: string) => {
+  const query = decodeURI(window.location.search.substring(1));
+  const vals = query.split('&');
+  let param = '';
+  vals.forEach((val) => {
+    const pair = val.split('=');
+    if (pair[0] === paramName) {
+      param = pair[1];
+    }
+  });
+  return param;
+};
