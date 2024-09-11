@@ -8,6 +8,18 @@ import { setAttribute } from '@/pages/Editor/Render/Engine/utils';
 import type { Stage } from './Stage';
 import type { Group } from './Group';
 
+interface FormConfig {
+  isRequired: boolean;
+  label: string;
+  name: string;
+}
+
+interface NodeConfig {
+  canDelete: boolean;
+  canDrag: boolean;
+  canScale: boolean;
+}
+
 export abstract class Node<T extends SVGGraphicsElement> {
   onChange: null | (() => void) = null;
   [key: string]: any;
@@ -81,6 +93,44 @@ export abstract class Node<T extends SVGGraphicsElement> {
     return this._rotation;
   }
 
+  protected _isForm: boolean = false;
+  get isForm() {
+    return this._isForm;
+  }
+
+  set isForm(isForm: boolean) {
+    this._isForm = isForm;
+    this.formConfig = {
+      isRequired: false,
+      label: 'label' + this._id,
+      name: 'name' + this._id,
+    };
+  }
+
+  protected _formConfig: Partial<FormConfig> = {};
+  get formConfig() {
+    return this._formConfig;
+  }
+
+  set formConfig(config: Partial<FormConfig>) {
+    this._formConfig = {
+      ...this.formConfig,
+      ...config,
+    };
+  }
+
+  protected _nodeConfig: NodeConfig = { canDelete: true, canDrag: true, canScale: true };
+  get nodeConfig() {
+    return this._nodeConfig;
+  }
+
+  set nodeConfig(config: NodeConfig) {
+    this._nodeConfig = {
+      ...this._nodeConfig,
+      ...config,
+    };
+  }
+
   get bBox(): SVGRect {
     return (this.dom as T).getBBox();
   }
@@ -96,20 +146,26 @@ export abstract class Node<T extends SVGGraphicsElement> {
   };
 
   toJson(): any {
-    const { x, y, rotation, type } = this;
+    const { x, y, rotation, type, isForm, formConfig, nodeConfig } = this;
     return {
       type,
       x,
       y,
       rotation,
+      nodeConfig,
+      isForm,
+      formConfig,
     };
   }
 
   fromJson(json: any) {
-    const { x, y, rotation } = json;
+    const { x, y, rotation, isForm, formConfig, nodeConfig } = json;
     this.x = x;
     this.y = y;
     this.rotation = rotation;
+    this.nodeConfig = nodeConfig;
+    this.isForm = isForm;
+    this.formConfig = formConfig;
     return this;
   }
 }

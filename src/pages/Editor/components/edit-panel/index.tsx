@@ -2,11 +2,12 @@ import type { ReactElement } from 'react';
 import React, { useEffect, useImperativeHandle, useReducer, useState } from 'react';
 import type { PosterMeta } from '@/pages/Editor/types';
 import styles from './index.less';
-import { Button, Empty, Form, Input, InputNumber, Select, Tabs, Image } from 'antd';
+import { Button, Empty, Form, Input, InputNumber, Select, Tabs, Image, Switch } from 'antd';
 import TabPane from '@ant-design/pro-card/es/components/TabPane';
-import type { Node } from '@/pages/Editor/Render/Engine';
+import type { Node, Text } from '@/pages/Editor/Render/Engine';
 import MaterialRepo from '@/components/MaterialRepo';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { get } from 'lodash';
 
 export interface EditPanelProps {
   meta: PosterMeta; // 文档信息，
@@ -24,7 +25,9 @@ interface FormProps {
   name: string;
   key: string;
   isDynamic?: boolean;
-  all?: boolean;
+  hide?: boolean;
+  valueKey?: string;
+  valuePath?: string;
   component: ReactElement | ((payload: any) => ReactElement);
 }
 
@@ -68,6 +71,7 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
             name: '表单字段',
             key: 'isForm',
             isDynamic: true,
+            hide: false,
             component: (selectNode) => {
               return (
                 <>
@@ -82,16 +86,36 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
                     />
                   </Form.Item>
                   {selectNode.isForm ? (
-                    <Form.Item label="必填">
-                      <Select
-                        options={[
-                          { label: '是', value: true },
-                          { label: '否', value: false },
-                        ]}
-                        value={(props.selectNode as any).isRequired}
-                        onChange={(value) => props.onValueChange('isRequired', value)}
-                      />
-                    </Form.Item>
+                    <>
+                      <Form.Item label="必填">
+                        <Select
+                          options={[
+                            { label: '是', value: true },
+                            { label: '否', value: false },
+                          ]}
+                          value={(props.selectNode as Text).formConfig?.isRequired}
+                          onChange={(isRequired) =>
+                            props.onValueChange('formConfig', { isRequired })
+                          }
+                        />
+                      </Form.Item>
+                      <Form.Item label="字段名">
+                        <Input
+                          value={(props.selectNode as Text).formConfig?.label}
+                          onChange={(e) =>
+                            props.onValueChange('formConfig', { label: e.target.value })
+                          }
+                        />
+                      </Form.Item>
+                      <Form.Item label="字段Key">
+                        <Input
+                          value={(props.selectNode as Text).formConfig?.name}
+                          onChange={(e) =>
+                            props.onValueChange('formConfig', { name: e.target.value })
+                          }
+                        />
+                      </Form.Item>
+                    </>
                   ) : null}
                 </>
               );
@@ -115,7 +139,8 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
         ];
         break;
     }
-    setForm(form);
+
+    setForm(form.filter((item) => !item.hide));
   }, [props.selectNode]);
 
   return (
@@ -132,7 +157,7 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
           }
         }}
       />
-      <Tabs activeKey={activeKey} onChange={setActiveKey}>
+      <Tabs activeKey={activeKey} onChange={setActiveKey} className={styles.tabs}>
         <TabPane tab="页面编辑" key="1">
           <Form name="t" wrapperCol={{ span: 16 }}>
             <Form.Item label="海报名称">
@@ -194,20 +219,15 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
                           ...(v.component.props?.className || []),
                           styles.inputShape,
                         ].join(' '),
-                        value: v.all ? props.selectNode : (props.selectNode as any)[v.key],
+                        [v.valueKey ? v.valueKey : 'value']: v.valuePath
+                          ? get(props.selectNode, v.valuePath)
+                          : (props.selectNode as any)[v.key],
                         onChange: v.component.props.onChange
                           ? v.component.props.onChange
                           : (e: any) => props.onValueChange(v.key, Math.floor(e) || 0),
                       },
                     }}
                   </Form.Item>
-                ))}
-              {form
-                .filter((item) => item.isDynamic)
-                .map((v) => (
-                  <div key={v.key}>
-                    {typeof v.component === 'function' ? v.component(props.selectNode) : null}
-                  </div>
                 ))}
               <Form.Item label="X">
                 <InputNumber
@@ -216,7 +236,6 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
                   onChange={(e) => props.onValueChange('x', e || 0)}
                 />
               </Form.Item>
-
               <Form.Item label="Y">
                 <InputNumber
                   className={styles.inputShape}
@@ -231,6 +250,34 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
                   onChange={(e) => props.onValueChange('rotation', e || 0)}
                 />
               </Form.Item>
+              <Form.Item label="是否可拖拽">
+                <Switch
+                  style={{ width: 35 }}
+                  checked={props.selectNode.nodeConfig.canDrag}
+                  onChange={(canDrag) => props.onValueChange('nodeConfig', { canDrag })}
+                />
+              </Form.Item>
+              <Form.Item label="是否可缩放">
+                <Switch
+                  style={{ width: 35 }}
+                  checked={props.selectNode.nodeConfig.canScale}
+                  onChange={(canScale) => props.onValueChange('nodeConfig', { canScale })}
+                />
+              </Form.Item>
+              <Form.Item label="是否可删除">
+                <Switch
+                  style={{ width: 35 }}
+                  checked={props.selectNode.nodeConfig.canDelete}
+                  onChange={(canDelete) => props.onValueChange('nodeConfig', { canDelete })}
+                />
+              </Form.Item>
+              {form
+                .filter((item) => item.isDynamic)
+                .map((v) => (
+                  <div key={v.key}>
+                    {typeof v.component === 'function' ? v.component(props.selectNode) : null}
+                  </div>
+                ))}
             </Form>
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="无选中图层" />

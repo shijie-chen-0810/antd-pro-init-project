@@ -44,24 +44,6 @@ export class Text extends Node<SVGTextElement> {
     this.fontSize = this.fontSize;
   }
 
-  protected _isForm: boolean = false;
-  get isForm() {
-    return this._isForm;
-  }
-
-  set isForm(isForm: boolean) {
-    this._isForm = isForm;
-    this.isRequired = false;
-  }
-
-  protected _isRequired: boolean = false;
-  get isRequired() {
-    return this._isRequired;
-  }
-
-  set isRequired(isRequired: boolean) {
-    this._isRequired = isRequired;
-  }
   constructor(text = '双击在此处编辑文字', fontSize = 32, fill = '#000000') {
     super();
     this._dom = createSvgElement('text') as SVGTextElement;
@@ -76,7 +58,7 @@ export class Text extends Node<SVGTextElement> {
   }
 
   toJson() {
-    const { x, y, rotation, type, text, fill, fontSize, isForm, isRequired } = this;
+    const { x, y, rotation, type, text, fill, fontSize, isForm, formConfig, nodeConfig } = this;
     return {
       x,
       y,
@@ -86,12 +68,13 @@ export class Text extends Node<SVGTextElement> {
       fill,
       fontSize,
       isForm,
-      isRequired,
+      formConfig,
+      nodeConfig,
     };
   }
 
   fromJson(json: any) {
-    const { x, y, rotation, text, fill, fontSize, isForm, isRequired } = json;
+    const { x, y, rotation, text, fill, fontSize, isForm, formConfig, nodeConfig } = json;
     this.x = x;
     this.y = y;
     this.rotation = rotation;
@@ -99,7 +82,8 @@ export class Text extends Node<SVGTextElement> {
     this.fill = fill;
     this.fontSize = fontSize;
     this.isForm = isForm;
-    this.isRequired = isRequired;
+    this.formConfig = formConfig;
+    this.nodeConfig = nodeConfig;
     return this;
   }
 }

@@ -49,7 +49,7 @@ const Editable = {
   events: [],
   render: (moveable: MoveableManagerInterface<any, any>, React: Renderer) => {
     const { pos2 } = moveable.state;
-    const { dimensionViewable } = moveable.props;
+    const { dimensionViewable, canDelete } = moveable.props;
     const rect = moveable.getRect();
     return (
       <div key="editable-viewer">
@@ -101,26 +101,28 @@ const Editable = {
           >
             图层下移
           </button>
-          <button
-            className="del"
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: '-35px',
-              background: 'red',
-              borderRadius: '4px',
-              appearance: 'none',
-              border: 0,
-              color: 'white',
-              fontSize: '15px',
-              fontWeight: 'bold',
-            }}
-            onClick={() => {
-              moveable.props.onDeleteNode();
-            }}
-          >
-            <DeleteOutlined />
-          </button>
+          {canDelete ? (
+            <button
+              className="del"
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: '-35px',
+                background: 'red',
+                borderRadius: '4px',
+                appearance: 'none',
+                border: 0,
+                color: 'white',
+                fontSize: '15px',
+                fontWeight: 'bold',
+              }}
+              onClick={() => {
+                moveable.props.onDeleteNode();
+              }}
+            >
+              <DeleteOutlined />
+            </button>
+          ) : null}
         </div>
         {dimensionViewable ? (
           <div
@@ -272,6 +274,7 @@ export default class Render extends Component<RenderProps> {
     this.ty = this.selectNode?.y || 0;
   };
   onDrag = ({ top, left }: { top: number; left: number }) => {
+    if (!this.selectNode?.nodeConfig.canDrag) return;
     if (this.selectNode) {
       this.selectNode.x = +(this.tx + left).toFixed(1);
       this.selectNode.y = +(this.ty + top).toFixed(1);
@@ -299,6 +302,7 @@ export default class Render extends Component<RenderProps> {
   //   -1,0    0,0    1,0
   //   -1,1    0,1    1,1
   onScale = (e: any) => {
+    if (!this.selectNode?.nodeConfig.canScale) return;
     const { delta, direction, clientX, clientY } = e;
     if (this.selectNode instanceof Image) {
       const tw = this.selectNode.width * delta[0];
@@ -653,6 +657,7 @@ export default class Render extends Component<RenderProps> {
           props={{
             editable: true,
             dimensionViewable: isText,
+            canDelete: this.selectNode?.nodeConfig.canDelete,
             onMoveUp: this.onMoveUp,
             onMoveDown: this.onMoveDown,
             onDeleteNode: this.onDeleteNode,

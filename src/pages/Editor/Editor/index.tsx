@@ -42,7 +42,7 @@ const Editor: React.FC = () => {
     onSuccess: (res) => {
       if (res.result) {
         message.success('保存成功');
-        history.replace('/imageEdit');
+        // history.replace('/imageEdit');
       }
     },
   });
