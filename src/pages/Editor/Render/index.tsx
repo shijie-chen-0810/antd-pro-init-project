@@ -29,9 +29,8 @@ type RenderProps = {
   width: number;
   height: number;
   bgSrc: string;
-  onSelect: (node: Node<any> | null | undefined) => void;
+  onSelect: (node: Node<any> | undefined) => void;
   onUpdate: () => void;
-  template: boolean;
   zoom: number;
 };
 
@@ -181,10 +180,6 @@ export default class Render extends Component<RenderProps> {
     this.stage.bgSrc = this.props.bgSrc;
     this.stage.title = this.props.title;
     stage.dom && this.renderStage?.appendChild(stage.dom);
-    // if (this.props.template) {
-    //   const text = new Text('由蒲公英提供技术支持');
-    //   this.stage.add(text);
-    // }
     this.scale = this.props.zoom;
 
     this.stage.dom?.addEventListener('mousedown', this.onStageMouseDown);
@@ -206,8 +201,7 @@ export default class Render extends Component<RenderProps> {
     if (
       prevProps.width !== this.props.width ||
       prevProps.height !== this.props.height ||
-      prevProps.bgSrc !== this.props.bgSrc ||
-      prevProps.title !== this.props.title
+      prevProps.bgSrc !== this.props.bgSrc
     ) {
       setTimeout(() => {
         // const sx = this.renderCmp.clientWidth / this.props.width;
@@ -219,7 +213,6 @@ export default class Render extends Component<RenderProps> {
         this.stage.width = this.props.width;
         this.stage.height = this.props.height;
         this.stage.bgSrc = this.props.bgSrc;
-        this.stage.title = this.props.title;
       }
     }
     if (prevProps.zoom !== this.props.zoom) {
@@ -503,7 +496,7 @@ export default class Render extends Component<RenderProps> {
     const node: Node<any> = this.stage?.findNode(_id) as Node<any>;
 
     if (node == this.stage) {
-      this.props.onSelect(null);
+      this.props.onSelect(undefined);
       this.setState({ target: null });
       return;
     }

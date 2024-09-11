@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2024-09-09 17:16:49
+ * @LastEditors: your name
+ * @LastEditTime: 2024-09-11 17:47:11
+ * @Description:
+ * @FilePath: /antd-pro-project-fe/src/pages/Editor/types/index.ts
+ */
 /**
  * 文档信息
  */
@@ -5,7 +13,10 @@ import type { ReactNode } from 'react';
 
 export interface PosterMeta {
   title: string;
-  type: string;
+  templateType: string;
+}
+
+export interface StageData {
   width: number;
   height: number;
   bgSrc: string;

@@ -1,19 +1,20 @@
 import type { ReactElement } from 'react';
 import React, { useEffect, useImperativeHandle, useReducer, useState } from 'react';
-import type { PosterMeta } from '@/pages/Editor/types';
+import type { PosterMeta, StageData } from '@/pages/Editor/types';
 import styles from './index.less';
 import { Button, Empty, Form, Input, InputNumber, Select, Tabs, Image, Switch } from 'antd';
 import TabPane from '@ant-design/pro-card/es/components/TabPane';
 import type { Node, Text } from '@/pages/Editor/Render/Engine';
 import MaterialRepo from '@/components/MaterialRepo';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { get } from 'lodash';
+import { floor, get } from 'lodash';
 
 export interface EditPanelProps {
+  stage: StageData; // 舞台信息
   meta: PosterMeta; // 文档信息，
   onMetaChange: (key: keyof PosterMeta, value: any) => void;
+  onStageChange: (key: keyof StageData, value: any) => void;
   selectNode: Node<any>;
-  template: boolean;
   onValueChange: (key: any, value: any) => void;
 }
 
@@ -150,7 +151,7 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
         visibleChange={setVisible}
         onFinish={(urls) => {
           if (urls && urls.length > 0) {
-            props.onMetaChange(
+            props.onStageChange(
               'bgSrc',
               urls[0].replace('//qzz-material.forwe.store', '//qzz-fadmin.forwe.store'),
             );
@@ -166,32 +167,42 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
                 onChange={(v) => props.onMetaChange('title', v.target.value)}
               />
             </Form.Item>
+            <Form.Item label="模板类别">
+              <Select
+                options={[
+                  { label: '普通模板', value: 'normal' },
+                  { label: '系统模板', value: 'system' },
+                ]}
+                value={props.meta.templateType}
+                onChange={(value) => props.onMetaChange('templateType', value)}
+              />
+            </Form.Item>
             <Form.Item label="画布宽度">
               <InputNumber
                 precision={0}
                 className={styles.inputShape}
-                value={props.meta.width}
-                onChange={(v) => props.onMetaChange('width', v || 0)}
+                value={props.stage.width}
+                onChange={(v) => props.onStageChange('width', v || 0)}
               />
             </Form.Item>
             <Form.Item label="画布高度">
               <InputNumber
                 precision={0}
                 className={styles.inputShape}
-                value={props.meta.height}
-                onChange={(v) => props.onMetaChange('height', v || 0)}
+                value={props.stage.height}
+                onChange={(v) => props.onStageChange('height', v || 0)}
               />
             </Form.Item>
             <Form.Item label="画布背景">
-              {props.meta.bgSrc ? (
+              {props.stage.bgSrc ? (
                 <div className={styles.bg}>
-                  <Image preview={false} width={155} height={290} src={props.meta.bgSrc} />
+                  <Image preview={false} width={155} height={290} src={props.stage.bgSrc} />
                   <div className={styles.imgBg}>
                     <Button onClick={() => setVisible(true)} type="primary">
                       修改背景
                     </Button>
                   </div>
-                  <div onClick={() => props.onMetaChange('bgSrc', '')} className={styles.close}>
+                  <div onClick={() => props.onStageChange('bgSrc', '')} className={styles.close}>
                     <DeleteOutlined />
                   </div>
                 </div>
@@ -224,7 +235,7 @@ const EditPanel = React.forwardRef<EditPanelRef, EditPanelProps>((props, ref) =>
                           : (props.selectNode as any)[v.key],
                         onChange: v.component.props.onChange
                           ? v.component.props.onChange
-                          : (e: any) => props.onValueChange(v.key, Math.floor(e) || 0),
+                          : (e: any) => props.onValueChange(v.key, floor(e, 2) || 0),
                       },
                     }}
                   </Form.Item>

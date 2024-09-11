@@ -27,11 +27,7 @@ const DefaultModuleList: Module[] = [
   },
 ];
 
-export interface ModuleLibProps {
-  template: boolean;
-}
-
-const ModuleLib: React.FC<ModuleLibProps> = ({ template }) => {
+const ModuleLib = () => {
   const handleDragStart = (e: React.DragEvent, target: Module) => {
     e.dataTransfer.setData('module', JSON.stringify(target));
   };

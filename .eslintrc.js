@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/consistent-indexed-object-style': 'off',
     'react/no-array-index-key': 'off',
     '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/dot-notation': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'no-underscore-dangle': 'off',
     'no-console': 'off',

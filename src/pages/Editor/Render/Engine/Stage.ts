@@ -123,13 +123,12 @@ export class Stage extends Group {
 
   toJson() {
     console.log(this, 'this');
-    const { x, y, rotation, type, children, width, height, bgSrc, title } = this;
+    const { x, y, rotation, type, children, width, height, bgSrc } = this;
     const childrenNode = children.map((v) => {
       return v.toJson();
     });
 
     return {
-      title,
       x,
       y,
       rotation,
@@ -144,11 +143,10 @@ export class Stage extends Group {
   fromJson(json: any): any {
     this.children.forEach((v) => this.remove(v));
 
-    const { x, y, width, height, rotation, children, bgSrc, title } = json;
+    const { x, y, width, height, rotation, children, bgSrc } = json;
 
     this.x = x;
     this.y = y;
-    this.title = title;
     this.width = width;
     this.height = height;
     this.rotation = rotation;

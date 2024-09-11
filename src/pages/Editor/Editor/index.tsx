@@ -7,9 +7,8 @@ import styles from './index.less';
 import ModuleLib from '@/pages/Editor/components/module-lib/module-lib';
 import type { EditPanelRef } from '@/pages/Editor/components/edit-panel/index';
 import EditPanel from '@/pages/Editor/components/edit-panel/index';
-import type { PosterMeta } from '@/pages/Editor/types';
+import type { PosterMeta, StageData } from '@/pages/Editor/types';
 import type { Node } from '@/pages/Editor/Render/Engine';
-import queryString from 'query-string';
 import { LogoutOutlined, SaveOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import SlidingBar from '@/components/SlidingBar';
@@ -23,15 +22,15 @@ const Editor: React.FC = () => {
   const [imgSrc, setImgSrc] = useState<string>();
   const [zoom, setZoom] = useState<number>(0.45);
 
-  const [meta, setMeta] = useState<PosterMeta>({
-    title: '激励海报',
-    type: 'team',
-    width: 844,
+  const [stageData, setStageData] = useState<StageData>({
+    width: 850,
     height: 1500,
     bgSrc: '',
   });
-
-  const { template } = queryString.parse(location.hash.split('?')[1]);
+  const [meta, setMeta] = useState<PosterMeta>({
+    title: '战报',
+    templateType: 'normal',
+  });
 
   const stageRef = useRef<Render | null>(null);
 
@@ -50,21 +49,20 @@ const Editor: React.FC = () => {
     manual: true,
     onSuccess: (res) => {
       const result = res.result;
+      const config = JSON.parse(result.config);
       if (result) {
-        stageRef.current?.fromJson(result);
-        console.log(meta, 'meta');
-        setMeta({
-          ...meta,
-          title: result.title,
-          bgSrc: result.bgSrc,
-          type: result.type,
-        });
+        stageRef.current?.fromJson(config);
+        setMeta({ title: result.title, templateType: result.templateType });
+        setStageData({ width: config.width, height: config.height, bgSrc: config.bgSrc });
       }
     },
   });
 
   const handleMetaChange = (key: keyof PosterMeta, value: any) => {
     setMeta({ ...meta, [key]: value });
+  };
+  const handleStageChange = (key: keyof StageData, value: any) => {
+    setStageData({ ...stageData, [key]: value });
   };
 
   const handleNodeValueChange = (key: any, value: any) => {
@@ -81,8 +79,8 @@ const Editor: React.FC = () => {
 
   const handleSave = () => {
     const stageData = stageRef.current?.toJson();
-    console.log(stageData, 'sta');
-    runInsertStageData(stageData);
+    console.log({ ...meta, config: JSON.stringify(stageData) }, 'data');
+    runInsertStageData({ ...meta, config: JSON.stringify(stageData) });
   };
 
   useEffect(() => {
@@ -98,9 +96,14 @@ const Editor: React.FC = () => {
         key="preview"
         type="primary"
         onClick={async () => {
-          await stageRef.current?.saveToImage(meta.title, meta.width, meta.height, (src: any) => {
-            setImgSrc(src);
-          });
+          await stageRef.current?.saveToImage(
+            meta.title,
+            stageData.width,
+            stageData.height,
+            (src: any) => {
+              setImgSrc(src);
+            },
+          );
           setPreviewOpen(true);
         }}
       >
@@ -132,18 +135,17 @@ const Editor: React.FC = () => {
       />
       <Layout className={styles.layoutStyle}>
         <Sider theme={'light'} width={107}>
-          <ModuleLib template={!!template} />
+          <ModuleLib />
         </Sider>
         <Content className={styles.layoutContent}>
           <Render
             ref={stageRef}
-            template={!!template}
             title={meta.title}
-            width={meta.width}
-            height={meta.height}
-            bgSrc={meta.bgSrc}
+            width={stageData.width}
+            height={stageData.height}
+            bgSrc={stageData.bgSrc}
             zoom={zoom}
-            onSelect={(node) => node && setCurrentSelect(node)}
+            onSelect={(node) => setCurrentSelect(node)}
             onUpdate={handleStageUpdate}
           />
           <SlidingBar zoom={zoom} setZoom={setZoom} />
@@ -152,9 +154,10 @@ const Editor: React.FC = () => {
         <Sider width={300} theme={'light'}>
           <EditPanel
             ref={editorRef}
-            template={!!template}
+            stage={stageData}
             meta={meta}
             onMetaChange={handleMetaChange}
+            onStageChange={handleStageChange}
             selectNode={currentSelect as Node<any>}
             onValueChange={handleNodeValueChange}
           />
